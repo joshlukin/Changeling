@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	2087200734	Play_MSC_MT_Melody			\Default Work Unit\Music\Play_MSC_MT_Melody	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	942549132	MSC_MT_Melody	.cache\3B\{3BBBEE72-7464-F108-F392-73691208DC77}.wem		\Containers\Default Work Unit\Music\MSC_MT_Melody		7540460
+
