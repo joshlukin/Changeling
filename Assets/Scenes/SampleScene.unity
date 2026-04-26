@@ -1037,6 +1037,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   items:
   - {fileID: 11400000, guid: 695ad2c70b15d42429cf4ab6d6bbeaeb, type: 2}
+  - {fileID: 11400000, guid: e9ec51809558d4812af3c73d5087bf73, type: 2}
+  - {fileID: 11400000, guid: e9ec51809558d4812af3c73d5087bf73, type: 2}
+  - {fileID: 11400000, guid: e9ec51809558d4812af3c73d5087bf73, type: 2}
 --- !u!65 &1794266536
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1124,7 +1127,7 @@ Transform:
   m_GameObject: {fileID: 1794266533}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.95, y: 1.52, z: 1.78}
+  m_LocalPosition: {x: -8.776, y: 1.52, z: 1.78}
   m_LocalScale: {x: 1.875, y: 1.875, z: 1.875}
   m_ConstrainProportionsScale: 0
   m_Children: []
