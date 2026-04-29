@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Central game state manager. Singleton — one instance persists across scenes.
+/// Central game state manager.
 /// Tracks the current day, story flags, and player stats.
 /// </summary>
 public class DayManager : MonoBehaviour
