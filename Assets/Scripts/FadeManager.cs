@@ -100,7 +100,7 @@ public class FadeManager : MonoBehaviour
 
     private void _SetAlpha(float alpha)
     {
-        if (fadeImage) return;
+        if (fadeImage == null) return;
         Color c = fadeImage.color;
         c.a = alpha;
         fadeImage.color = c;

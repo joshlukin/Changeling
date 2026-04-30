@@ -146,7 +146,7 @@ public abstract class Interactable : MonoBehaviour
         if (Camera.main)
         {
             indicatorObject.transform.rotation = Quaternion.LookRotation(
-                Camera.main.transform.position - indicatorObject.transform.position
+                -(Camera.main.transform.position - indicatorObject.transform.position)
             );
         }
     }
@@ -154,6 +154,6 @@ public abstract class Interactable : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, interactRadius);
+        Gizmos.DrawWireSphere(this.gameObject.transform.position, interactRadius);
     }
 }
