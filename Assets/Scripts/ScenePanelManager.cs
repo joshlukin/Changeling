@@ -3,9 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
-/// Manages the full-screen 2D panel that overlays the 3D view.
-/// </summary>
 public class ScenePanelManager : MonoBehaviour
 {
     public static ScenePanelManager Instance { get; private set; }
@@ -21,20 +18,14 @@ public class ScenePanelManager : MonoBehaviour
 
     [Header("Player Reference")]
     public MonoBehaviour playerController;
-
-    // -------------------------------------------------------
-    // State
-    // -------------------------------------------------------
+    
 
     private bool _isOpen = false;
-    private bool _isTransitioning = false;  // true while fading in OR out
+    private bool _isTransitioning = false;
     private System.Action _onClose;
 
     public bool IsOpen => _isOpen;
-
-    // -------------------------------------------------------
-    // Lifecycle
-    // -------------------------------------------------------
+    
 
     void Awake()
     {
@@ -61,6 +52,57 @@ public class ScenePanelManager : MonoBehaviour
         _onClose = onClose;
         _isOpen = true;
 
+        SetupArt(art, label);
+        SetContinuePromptVisible(true);
+        LockPlayer(true);
+        StartCoroutine(OpenRoutine(null));
+    }
+
+    public void OpenPanelWithCallback(Sprite art, string label = "", System.Action onClose = null, System.Action onPanelReady = null)
+    {
+        if (_isOpen || _isTransitioning) return;
+
+        _onClose = onClose;
+        _isOpen = true;
+
+        SetupArt(art, label);
+        // Hide continue prompt — dialogue system will handle advancing
+        SetContinuePromptVisible(false);
+        LockPlayer(true);
+        StartCoroutine(OpenRoutine(onPanelReady));
+    }
+
+    public void ClosePanel()
+    {
+        if (!_isOpen || _isTransitioning) return;
+        StartCoroutine(CloseRoutine());
+    }
+
+    /// <summary>
+    /// Called by DialogueManager when dialogue starts, to hide the E prompt
+    /// so it doesn't overlap with the dialogue box's own prompt.
+    /// </summary>
+    public void SetContinuePromptVisible(bool visible)
+    {
+        if (continuePromptText != null)
+            continuePromptText.gameObject.SetActive(visible);
+    }
+
+
+
+    void Update()
+    {
+        if (!_isOpen || _isTransitioning) return;
+        
+        if (DialogueManager.Instance != null && DialogueManager.Instance.IsPlaying) return;
+
+        if (Input.GetKeyDown(KeyCode.E))
+            ClosePanel();
+    }
+    
+
+    private void SetupArt(Sprite art, string label)
+    {
         if (artImage != null)
         {
             if (art != null)
@@ -80,35 +122,10 @@ public class ScenePanelManager : MonoBehaviour
             sceneLabelText.text = label;
             sceneLabelText.gameObject.SetActive(!string.IsNullOrEmpty(label));
         }
-
-        if (continuePromptText != null)
-            continuePromptText.text = "[E] Continue";
-
-        LockPlayer(true);
-        StartCoroutine(OpenRoutine());
     }
+    
 
-    public void ClosePanel()
-    {
-        if (!_isOpen || _isTransitioning) return;
-        StartCoroutine(CloseRoutine());
-    }
-
-    // -------------------------------------------------------
-    // Input — only close if fully open and not transitioning
-    // -------------------------------------------------------
-
-    void Update()
-    {
-        if (_isOpen && !_isTransitioning && Input.GetKeyDown(KeyCode.E))
-            ClosePanel();
-    }
-
-    // -------------------------------------------------------
-    // Coroutines
-    // -------------------------------------------------------
-
-    private IEnumerator OpenRoutine()
+    private IEnumerator OpenRoutine(System.Action onPanelReady)
     {
         _isTransitioning = true;
         panelRoot.SetActive(true);
@@ -117,6 +134,9 @@ public class ScenePanelManager : MonoBehaviour
         if (cg != null)
         {
             cg.alpha = 0f;
+            cg.blocksRaycasts = false;
+            cg.interactable = false;
+
             float elapsed = 0f;
             while (elapsed < fadeDuration)
             {
@@ -125,12 +145,12 @@ public class ScenePanelManager : MonoBehaviour
                 yield return null;
             }
             cg.alpha = 1f;
+            cg.blocksRaycasts = true;
+            cg.interactable = true;
         }
 
         _isTransitioning = false;
-        // Panel is now fully open — safe to show buttons, play dialogue, etc.
-        // Callers that need to run logic AFTER the panel is visible
-        // should use the onPanelReady callback via OpenPanelWithCallback.
+        onPanelReady?.Invoke();
     }
 
     private IEnumerator CloseRoutine()
@@ -140,6 +160,9 @@ public class ScenePanelManager : MonoBehaviour
         CanvasGroup cg = panelRoot.GetComponent<CanvasGroup>();
         if (cg != null)
         {
+            cg.blocksRaycasts = false;
+            cg.interactable = false;
+
             float elapsed = 0f;
             while (elapsed < fadeDuration)
             {
@@ -159,74 +182,6 @@ public class ScenePanelManager : MonoBehaviour
         _onClose = null;
     }
 
-    // -------------------------------------------------------
-    // Extended open with ready callback
-    // -------------------------------------------------------
-
-    /// <summary>
-    /// Opens the panel and fires onPanelReady once the fade-in is complete.
-    /// Use this when you need to show buttons or start dialogue AFTER the panel is visible.
-    /// </summary>
-    public void OpenPanelWithCallback(Sprite art, string label = "", System.Action onClose = null, System.Action onPanelReady = null)
-    {
-        if (_isOpen || _isTransitioning) return;
-
-        _onClose = onClose;
-        _isOpen = true;
-
-        if (artImage != null)
-        {
-            if (art != null)
-            {
-                artImage.sprite = art;
-                artImage.color = Color.white;
-            }
-            else
-            {
-                artImage.sprite = null;
-                artImage.color = new Color(0.1f, 0.08f, 0.12f);
-            }
-        }
-
-        if (sceneLabelText != null)
-        {
-            sceneLabelText.text = label;
-            sceneLabelText.gameObject.SetActive(!string.IsNullOrEmpty(label));
-        }
-
-        if (continuePromptText != null)
-            continuePromptText.text = "[E] Continue";
-
-        LockPlayer(true);
-        StartCoroutine(OpenRoutineWithCallback(onPanelReady));
-    }
-
-    private IEnumerator OpenRoutineWithCallback(System.Action onPanelReady)
-    {
-        _isTransitioning = true;
-        panelRoot.SetActive(true);
-
-        CanvasGroup cg = panelRoot.GetComponent<CanvasGroup>();
-        if (cg != null)
-        {
-            cg.alpha = 0f;
-            float elapsed = 0f;
-            while (elapsed < fadeDuration)
-            {
-                elapsed += Time.deltaTime;
-                cg.alpha = Mathf.Clamp01(elapsed / fadeDuration);
-                yield return null;
-            }
-            cg.alpha = 1f;
-        }
-
-        _isTransitioning = false;
-        onPanelReady?.Invoke();
-    }
-
-    // -------------------------------------------------------
-    // Player lock
-    // -------------------------------------------------------
 
     private void LockPlayer(bool locked)
     {

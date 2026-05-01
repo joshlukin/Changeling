@@ -2,9 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
-/// The front door / leave trigger that initiates the Shaman visit.
-/// </summary>
 public class ShamanVisitInteractable : Interactable
 {
     [Header("Shaman Visit")]
@@ -30,8 +27,6 @@ public class ShamanVisitInteractable : Interactable
     {
         SetupRemedyButtons();
 
-        // Use OpenPanelWithCallback so dialogue only starts after the panel
-        // is fully faded in — prevents the onComplete firing on the same frame
         ScenePanelManager.Instance.OpenPanelWithCallback(
             shamanArt,
             "The Shaman",
@@ -66,12 +61,17 @@ public class ShamanVisitInteractable : Interactable
         HideRemedyChoice();
 
         var items = shamanInventory != null ? shamanInventory.items : null;
+        
+        //offers just the first two items for day 1 TODO: make applicable to all days, potential fix is to be controlled by DayManager
+        if (remedyALabel != null)
+            remedyALabel.text = (items != null && items.Count >= 1)
+                ? items[0].itemName
+                : "Empty";
 
-        if (items != null && items.Count >= 1 && remedyALabel != null)
-            remedyALabel.text = items[0].itemName;
-
-        if (items != null && items.Count >= 2 && remedyBLabel != null)
-            remedyBLabel.text = items[1].itemName;
+        if (remedyBLabel != null)
+            remedyBLabel.text = (items != null && items.Count >= 2)
+                ? items[1].itemName
+                : "Empty";
 
         if (remedyButtonA != null)
         {
