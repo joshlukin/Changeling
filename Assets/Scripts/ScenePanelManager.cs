@@ -87,14 +87,23 @@ public class ScenePanelManager : MonoBehaviour
         if (continuePromptText != null)
             continuePromptText.gameObject.SetActive(visible);
     }
+    
+    private bool _canCloseWithKey = true;
 
+    // Public method to toggle this state
+    public void SetCanCloseWithKey(bool canClose)
+    {
+        _canCloseWithKey = canClose;
+    }
 
 
     void Update()
     {
         if (!_isOpen || _isTransitioning) return;
-        
-        if (DialogueManager.Instance != null && DialogueManager.Instance.IsPlaying) return;
+    
+        // Don't close if dialogue is playing OR if the key-close is locked
+        if ((DialogueManager.Instance != null && DialogueManager.Instance.IsPlaying) || !_canCloseWithKey) 
+            return;
 
         if (Input.GetKeyDown(KeyCode.E))
             ClosePanel();
@@ -183,7 +192,7 @@ public class ScenePanelManager : MonoBehaviour
     }
 
 
-    private void LockPlayer(bool locked)
+    public void LockPlayer(bool locked)
     {
         if (playerController != null)
             playerController.enabled = !locked;

@@ -17,9 +17,10 @@ public class PianoInteractable : Interactable
         new DialogueLine("Siofra", "Is it breakfast time?")
     };
 
+    // Fix: both stare lines have no speaker so the name panel stays hidden throughout
     private static readonly DialogueLine[] _stareLines = new DialogueLine[]
     {
-        new DialogueLine("Siofra", "..."),
+        new DialogueLine("", "..."),
         new DialogueLine("", "...")
     };
 
@@ -41,7 +42,6 @@ public class PianoInteractable : Interactable
             onPanelReady: () =>
             {
                 UpdateHomeworkPromptVisibility();
-
                 DialogueManager.Instance.PlayDialogue(
                     DialogueSequence.Create(lines)
                 );

@@ -17,6 +17,9 @@ public class ShamanVisitInteractable : Interactable
     public TextMeshProUGUI remedyBLabel;
 
     private bool _remedyPurchasedToday = false;
+    // Tracks whether the panel was closed intentionally after a remedy choice,
+    // vs closed by the player pressing E before choosing
+    private bool _panelClosedByChoice = false;
 
     protected override bool CanInteract()
     {
@@ -25,7 +28,11 @@ public class ShamanVisitInteractable : Interactable
 
     protected override void OnInteract()
     {
-        SetupRemedyButtons();
+        // Reset purchase state for this visit
+        _remedyPurchasedToday = false;
+    
+        // Set up buttons BEFORE opening (don't hide inside SetupRemedyButtons)
+        SetupRemedyButtons(); // remove the HideRemedyChoice() call from inside this
 
         ScenePanelManager.Instance.OpenPanelWithCallback(
             shamanArt,
@@ -38,56 +45,55 @@ public class ShamanVisitInteractable : Interactable
                         new DialogueLine("Shaman", "Ah, you've come again."),
                         new DialogueLine("Shaman", "What will it be today?")
                     ),
-                    onComplete: ShowRemedyChoice
+                    onComplete: ShowRemedyChoice  // buttons show AFTER dialogue
                 );
             }
         );
     }
 
+
     private void ShowRemedyChoice()
     {
+        Debug.Log("$[Shaman] Show remedy choice");
         if (remedyChoiceRoot != null)
             remedyChoiceRoot.SetActive(true);
     }
 
     private void HideRemedyChoice()
     {
+        Debug.Log("$[Shaman] Hide remedy choice");
         if (remedyChoiceRoot != null)
             remedyChoiceRoot.SetActive(false);
     }
 
     private void SetupRemedyButtons()
     {
-        HideRemedyChoice();
-
+        // REMOVED: HideRemedyChoice() from here — caller controls visibility
         var items = shamanInventory != null ? shamanInventory.items : null;
-        
-        //offers just the first two items for day 1 TODO: make applicable to all days, potential fix is to be controlled by DayManager
-        if (remedyALabel != null)
-            remedyALabel.text = (items != null && items.Count >= 1)
-                ? items[0].itemName
-                : "Empty";
 
+        if (remedyALabel != null)
+            remedyALabel.text = (items != null && items.Count >= 1) ? items[0].itemName : "Empty";
         if (remedyBLabel != null)
-            remedyBLabel.text = (items != null && items.Count >= 2)
-                ? items[1].itemName
-                : "Empty";
+            remedyBLabel.text = (items != null && items.Count >= 2) ? items[1].itemName : "Empty";
 
         if (remedyButtonA != null)
         {
             remedyButtonA.onClick.RemoveAllListeners();
             remedyButtonA.onClick.AddListener(() => OnRemedyChosen(0));
         }
-
         if (remedyButtonB != null)
         {
             remedyButtonB.onClick.RemoveAllListeners();
             remedyButtonB.onClick.AddListener(() => OnRemedyChosen(1));
         }
+    
+        // Start hidden — ShowRemedyChoice will reveal after dialogue
+        HideRemedyChoice();
     }
 
     private void OnRemedyChosen(int index)
     {
+        Debug.Log($"[Shaman] Remedy choice: {index}");
         if (_remedyPurchasedToday) return;
         if (shamanInventory == null || shamanInventory.items.Count <= index) return;
 
@@ -98,6 +104,7 @@ public class ShamanVisitInteractable : Interactable
             playerInventory.AddItem(chosen);
 
         _remedyPurchasedToday = true;
+        _panelClosedByChoice = true;
         HideRemedyChoice();
 
         Debug.Log($"[Shaman] Player chose: {chosen.itemName}");
@@ -116,10 +123,13 @@ public class ShamanVisitInteractable : Interactable
         DayManager.Instance.SetFlag("shaman_visited_today");
         HideRemedyChoice();
 
+        ScenePanelManager.Instance.LockPlayer(true);
+
         DialogueManager.Instance.PlayDialogue(
             DialogueSequence.Create(
                 new DialogueLine("", "It's getting late... I should check on Sio.")
-            )
+            ),
+            onComplete: () => ScenePanelManager.Instance.LockPlayer(false)
         );
     }
 }

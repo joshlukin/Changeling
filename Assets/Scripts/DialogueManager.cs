@@ -1,39 +1,30 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
-/// Manages sequential dialogue display.
-/// Feed it a DialogueSequence and it handles the rest.
-/// Press key to advance lines.
-/// </summary>
 public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance { get; private set; }
 
     [Header("UI References")]
-    [Tooltip("The root panel that shows/hides the dialogue box.")]
     public GameObject dialoguePanel;
-
-    [Tooltip("Displays the speaker's name. Hide this object for narration/monologue lines.")]
     public TextMeshProUGUI speakerNameText;
-
-    [Tooltip("Displays the dialogue line.")]
     public TextMeshProUGUI dialogueText;
 
     [Header("Settings")]
     public KeyCode advanceKey = KeyCode.E;
-
 
     private Queue<DialogueLine> _lineQueue = new Queue<DialogueLine>();
     private System.Action _onComplete;
     private bool _isPlaying = false;
     private bool _awaitingInput = false;
 
+    // If PlayDialogue is called while already playing, store it here
+    // and play it immediately after the current sequence ends.
+    private DialogueSequence _pendingSequence;
+    private System.Action _pendingOnComplete;
+
     public bool IsPlaying => _isPlaying;
-    
 
     void Awake()
     {
@@ -45,7 +36,6 @@ public class DialogueManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
         HidePanel();
     }
 
@@ -59,19 +49,36 @@ public class DialogueManager : MonoBehaviour
     // Public API
     // -------------------------------------------------------
 
-    /// <summary>
-    /// Starts playing a dialogue sequence.
-    /// </summary>
-    /// <param name="sequence">The lines to display.</param>
-    /// <param name="onComplete">Optional callback fired when the last line is dismissed.</param>
     public void PlayDialogue(DialogueSequence sequence, System.Action onComplete = null)
     {
         if (_isPlaying)
         {
-            Debug.LogWarning("[DialogueManager] Already playing dialogue. Ignoring new request.");
+            // Queue it instead of dropping it — fixes shaman dialogue being skipped
+            Debug.Log("[DialogueManager] Queuing sequence — already playing.");
+            _pendingSequence = sequence;
+            _pendingOnComplete = onComplete;
             return;
         }
 
+        StartSequence(sequence, onComplete);
+    }
+
+    public void ForceStop()
+    {
+        _lineQueue.Clear();
+        _pendingSequence = null;
+        _pendingOnComplete = null;
+        _isPlaying = false;
+        _awaitingInput = false;
+        HidePanel();
+    }
+
+    // -------------------------------------------------------
+    // Internal
+    // -------------------------------------------------------
+
+    private void StartSequence(DialogueSequence sequence, System.Action onComplete)
+    {
         _lineQueue.Clear();
         foreach (var line in sequence.lines)
             _lineQueue.Enqueue(line);
@@ -83,19 +90,6 @@ public class DialogueManager : MonoBehaviour
         DisplayNextLine();
     }
 
-    /// <summary>
-    /// Immediately stops dialogue and hides the panel.
-    /// </summary>
-    public void ForceStop()
-    {
-        StopAllCoroutines();
-        _lineQueue.Clear();
-        _isPlaying = false;
-        _awaitingInput = false;
-        HidePanel();
-    }
-
-
     private void DisplayNextLine()
     {
         if (_lineQueue.Count == 0)
@@ -106,16 +100,15 @@ public class DialogueManager : MonoBehaviour
 
         DialogueLine line = _lineQueue.Dequeue();
 
-        // Speaker name — hide the label for narration/monologue
         bool hasSpeaker = !string.IsNullOrEmpty(line.speakerName);
-        if (speakerNameText)
+        if (speakerNameText != null)
         {
             speakerNameText.gameObject.SetActive(hasSpeaker);
             if (hasSpeaker)
                 speakerNameText.text = line.speakerName;
         }
 
-        if (dialogueText)
+        if (dialogueText != null)
             dialogueText.text = line.text;
 
         _awaitingInput = true;
@@ -132,19 +125,31 @@ public class DialogueManager : MonoBehaviour
         _isPlaying = false;
         _awaitingInput = false;
         HidePanel();
-        _onComplete?.Invoke();
+
+        var callback = _onComplete;
         _onComplete = null;
+        callback?.Invoke();
+
+        // Play pending sequence if one was queued during this sequence
+        if (_pendingSequence != null)
+        {
+            var next = _pendingSequence;
+            var nextCallback = _pendingOnComplete;
+            _pendingSequence = null;
+            _pendingOnComplete = null;
+            StartSequence(next, nextCallback);
+        }
     }
 
     private void ShowPanel()
     {
-        if (dialoguePanel)
+        if (dialoguePanel != null)
             dialoguePanel.SetActive(true);
     }
 
     private void HidePanel()
     {
-        if (dialoguePanel)
+        if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
     }
 }

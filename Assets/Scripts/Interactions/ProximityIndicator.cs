@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ProximityDetector : MonoBehaviour
 {
-    [Tooltip("How often (in seconds) to scan for nearby interactables. 0.1-0.2 is ideal.")]
+    [Tooltip("How often (in seconds) to scan for nearby interactables.")]
     public float scanInterval = 0.15f;
 
     private Interactable _currentInteractable;
@@ -23,9 +23,6 @@ public class ProximityDetector : MonoBehaviour
         Interactable closest = null;
         float closestDist = float.MaxValue;
 
-        // Iterate all interactables and find the closest one in range.
-        // FindObjectsByType is called on a timer (not every frame) so the
-        // performance cost is acceptable for a small scene like this.
         foreach (var interactable in FindObjectsByType<Interactable>(FindObjectsSortMode.None))
         {
             float dist = Vector3.Distance(transform.position, interactable.transform.position);
@@ -37,17 +34,24 @@ public class ProximityDetector : MonoBehaviour
         }
 
         // Exited range of previous
-        if (_currentInteractable && _currentInteractable != closest)
+        if (_currentInteractable != null && _currentInteractable != closest)
         {
             _currentInteractable.OnPlayerExitRange();
             _currentInteractable = null;
         }
 
         // Entered range of new
-        if (closest && closest != _currentInteractable)
+        if (closest != null && closest != _currentInteractable)
         {
             _currentInteractable = closest;
             _currentInteractable.OnPlayerEnterRange();
+        }
+
+        // Already in range — refresh indicator in case CanInteract changed
+        // (e.g. kitchen counter after brunch is made)
+        if (_currentInteractable != null && _currentInteractable == closest)
+        {
+            _currentInteractable.RefreshIndicator();
         }
     }
 }

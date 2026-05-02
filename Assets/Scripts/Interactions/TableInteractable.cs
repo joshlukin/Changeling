@@ -31,7 +31,10 @@ public class TableInteractable : Interactable
 
                 if (plateProp != null)
                     plateProp.SetActive(true);
-
+                
+            },
+            onPanelReady: () =>
+            {
                 DialogueManager.Instance.PlayDialogue(
                     DialogueSequence.Create(
                         new DialogueLine("", "There. Food's on the table.")
