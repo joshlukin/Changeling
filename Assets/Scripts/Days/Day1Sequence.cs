@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-
 /// <summary>
 /// Drives the Day 1 story sequence.
 /// Attach to an empty GameObject in your scene.
@@ -22,61 +21,69 @@ using UnityEngine;
 /// 12. Table: call Siofra → sets dinner_placed
 /// 13. Health monitor → day ends
 /// </summary>
+
 public class Day1Sequence : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("The evening version of the kitchen counter interactable (dinner).")]
     public DinnerCounterInteractable dinnerCounter;
-
-    [Tooltip("The evening version of the table interactable (call Siofra).")]
     public DinnerTableInteractable dinnerTable;
-
-    [Tooltip("Health monitor UI root — shown at end of day.")]
     public GameObject healthMonitorUI;
+    public Day2Sequence day2Sequence;
 
-    // Poll interval — checks flag state this often
+    [Header("Opening")]
+    [Tooltip("Background art shown during the opening bedroom sequence.")]
+    public Sprite bedroomArt;
+
     private const float PollInterval = 0.3f;
-
-    // -------------------------------------------------------
-    // Start
-    // -------------------------------------------------------
 
     IEnumerator Start()
     {
-        // Brief wait to ensure all singletons are initialised
+        // Wait one frame for all singletons to initialise
         yield return null;
-
         yield return StartCoroutine(MorningSequence());
     }
 
-    // -------------------------------------------------------
-    // Morning
-    // -------------------------------------------------------
-
     IEnumerator MorningSequence()
     {
-        // 1. Fade in — player "opens eyes"
+        // 1. Start fully black
         FadeManager.Instance.SnapToBlack();
+
+        // 2. Open the bedroom art panel BEFORE fading in
+        // This means the player never sees the 3D hallway during the intro.
+        // OpenPanel is used (not WithCallback) so the [E] prompt shows —
+        // but we immediately hide it since dialogue controls advancing here.
+        ScenePanelManager.Instance.OpenPanel(
+            bedroomArt,
+            "Bedroom",
+            onClose: null
+        );
+
+        // 3. Fade in — player "opens eyes" into the bedroom art
         yield return FadeManager.Instance.FadeIn(1.5f);
 
-        // 2. Opening monologue
+        // 4. Hide the [E] prompt — dialogue advances lines instead
+        ScenePanelManager.Instance.SetContinuePromptVisible(false);
+
+        // 5. Opening monologue plays over the bedroom art
         yield return PlayAndWait(DialogueSequence.Create(
             new DialogueLine("", "...Another morning."),
             new DialogueLine("", "I should check the calendar.")
         ));
 
-        // 3. Bedroom objective
+        // 6. Close bedroom art — player now sees the 3D hallway
+        ScenePanelManager.Instance.ClosePanel();
+
+        // Brief pause before objective appears
+        yield return new WaitForSeconds(0.3f);
+
+        // 7. Calendar objective
         ObjectiveManager.Instance.SetObjective("Check the calendar.");
-
-        // 4. Wait for calendar to be read
         yield return WaitForFlag("has_read_calendar");
+
         ObjectiveManager.Instance.SetObjective("Find the kitchen and make brunch.");
-
-        // 5. Wait for brunch to be made
         yield return WaitForFlag("brunch_made");
-        ObjectiveManager.Instance.SetObjective("Place the food on the table.");
 
-        // 6. Wait for food to be placed
+        ObjectiveManager.Instance.SetObjective("Place the food on the table.");
         yield return WaitForFlag("food_placed");
 
         yield return PlayAndWait(DialogueSequence.Create(
@@ -84,38 +91,26 @@ public class Day1Sequence : MonoBehaviour
         ));
 
         ObjectiveManager.Instance.SetObjective("Check on Siofra in the living room.");
-
-        // 7. Wait for first piano interaction
         yield return WaitForFlag("piano_visited_morning");
 
         ObjectiveManager.Instance.SetObjective("Visit the Shaman.");
-
-        // 8. Wait for shaman visit
         yield return WaitForFlag("shaman_visited_today");
-
-        // Shaman visit plays its own return monologue — just wait for it
         yield return WaitForFlag("shaman_return_complete");
 
         yield return StartCoroutine(EveningSequence());
     }
 
-    // -------------------------------------------------------
-    // Evening
-    // -------------------------------------------------------
-
     IEnumerator EveningSequence()
     {
         ObjectiveManager.Instance.SetObjective("Check on Siofra.");
-
-        // Evening piano interaction
         yield return WaitForFlag("piano_visited_evening");
 
-        // Unlock dinner counter and table
         if (dinnerCounter != null) dinnerCounter.gameObject.SetActive(true);
-        if (dinnerTable != null) dinnerTable.gameObject.SetActive(true);
 
         ObjectiveManager.Instance.SetObjective("Make dinner.");
         yield return WaitForFlag("dinner_made");
+
+        if (dinnerTable != null) dinnerTable.gameObject.SetActive(true);
 
         ObjectiveManager.Instance.SetObjective("Call Siofra for dinner.");
         yield return WaitForFlag("dinner_placed");
@@ -125,16 +120,11 @@ public class Day1Sequence : MonoBehaviour
             new DialogueLine("", "She seems a little better today.")
         ));
 
-        // Health monitor
         ObjectiveManager.Instance.SetObjective("Check the health monitor.");
         yield return WaitForFlag("health_checked");
 
         yield return StartCoroutine(EndOfDay());
     }
-
-    // -------------------------------------------------------
-    // End of day
-    // -------------------------------------------------------
 
     IEnumerator EndOfDay()
     {
@@ -145,20 +135,25 @@ public class Day1Sequence : MonoBehaviour
             new DialogueLine("", "I should keep this up.")
         ));
 
-        // Fade out to end day
         yield return FadeManager.Instance.FadeOut(1.5f);
 
         DayManager.Instance.AdvanceDay();
-
-        // TODO: load Day 2 scene or reset flags for next day here
-        Debug.Log("[Day1Sequence] Day 1 complete.");
+        
+        if (day2Sequence != null)
+        {
+            gameObject.SetActive(false);
+            day2Sequence.StartDay2();
+        }
+        else
+        {
+            Debug.LogWarning("[Day1Sequence] No Day2Sequence assigned.");
+        } 
     }
 
     // -------------------------------------------------------
     // Helpers
     // -------------------------------------------------------
 
-    /// <summary>Plays a dialogue sequence and waits until it finishes.</summary>
     private IEnumerator PlayAndWait(DialogueSequence sequence)
     {
         bool done = false;
@@ -166,7 +161,6 @@ public class Day1Sequence : MonoBehaviour
         yield return new WaitUntil(() => done);
     }
 
-    /// <summary>Polls DayManager every PollInterval until the flag is set.</summary>
     private IEnumerator WaitForFlag(string flag)
     {
         while (!DayManager.Instance.GetFlag(flag))
