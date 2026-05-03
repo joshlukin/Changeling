@@ -17,8 +17,6 @@ public class ShamanVisitInteractable : Interactable
     public TextMeshProUGUI remedyBLabel;
 
     private bool _remedyPurchasedToday = false;
-    // Tracks whether the panel was closed intentionally after a remedy choice,
-    // vs closed by the player pressing E before choosing
     private bool _panelClosedByChoice = false;
 
     protected override bool CanInteract()
@@ -28,11 +26,15 @@ public class ShamanVisitInteractable : Interactable
 
     protected override void OnInteract()
     {
-        // Reset purchase state for this visit
         _remedyPurchasedToday = false;
-    
-        // Set up buttons BEFORE opening (don't hide inside SetupRemedyButtons)
-        SetupRemedyButtons(); // remove the HideRemedyChoice() call from inside this
+        _panelClosedByChoice = false;
+
+        SetupRemedyButtons();
+
+        // Prevent E from closing the panel while we're in the shaman scene —
+        // closing is handled exclusively by OnRemedyChosen or the player
+        // explicitly leaving without buying
+        ScenePanelManager.Instance.SetCanCloseWithKey(false);
 
         ScenePanelManager.Instance.OpenPanelWithCallback(
             shamanArt,
@@ -45,55 +47,55 @@ public class ShamanVisitInteractable : Interactable
                         new DialogueLine("Shaman", "Ah, you've come again."),
                         new DialogueLine("Shaman", "What will it be today?")
                     ),
-                    onComplete: ShowRemedyChoice  // buttons show AFTER dialogue
+                    onComplete: ShowRemedyChoice
                 );
             }
         );
     }
 
-
     private void ShowRemedyChoice()
     {
-        Debug.Log("$[Shaman] Show remedy choice");
+        Debug.Log("[Shaman] ShowRemedyChoice called");
         if (remedyChoiceRoot != null)
             remedyChoiceRoot.SetActive(true);
     }
 
     private void HideRemedyChoice()
     {
-        Debug.Log("$[Shaman] Hide remedy choice");
         if (remedyChoiceRoot != null)
             remedyChoiceRoot.SetActive(false);
     }
 
     private void SetupRemedyButtons()
     {
-        // REMOVED: HideRemedyChoice() from here — caller controls visibility
+        // Hide until dialogue finishes
+        HideRemedyChoice();
+
         var items = shamanInventory != null ? shamanInventory.items : null;
 
         if (remedyALabel != null)
-            remedyALabel.text = (items != null && items.Count >= 1) ? items[0].itemName : "Empty";
+            remedyALabel.text = (items != null && items.Count >= 1)
+                ? items[0].itemName : "Empty";
+
         if (remedyBLabel != null)
-            remedyBLabel.text = (items != null && items.Count >= 2) ? items[1].itemName : "Empty";
+            remedyBLabel.text = (items != null && items.Count >= 2)
+                ? items[1].itemName : "Empty";
 
         if (remedyButtonA != null)
         {
             remedyButtonA.onClick.RemoveAllListeners();
             remedyButtonA.onClick.AddListener(() => OnRemedyChosen(0));
         }
+
         if (remedyButtonB != null)
         {
             remedyButtonB.onClick.RemoveAllListeners();
             remedyButtonB.onClick.AddListener(() => OnRemedyChosen(1));
         }
-    
-        // Start hidden — ShowRemedyChoice will reveal after dialogue
-        HideRemedyChoice();
     }
 
     private void OnRemedyChosen(int index)
     {
-        Debug.Log($"[Shaman] Remedy choice: {index}");
         if (_remedyPurchasedToday) return;
         if (shamanInventory == null || shamanInventory.items.Count <= index) return;
 
@@ -114,22 +116,44 @@ public class ShamanVisitInteractable : Interactable
                 new DialogueLine("Shaman", $"The {chosen.itemName} will help her."),
                 new DialogueLine("Shaman", "Use it wisely.")
             ),
-            onComplete: () => ScenePanelManager.Instance.ClosePanel()
+            onComplete: () =>
+            {
+                // Re-enable key close now that the flow is complete
+                ScenePanelManager.Instance.SetCanCloseWithKey(true);
+                ScenePanelManager.Instance.ClosePanel();
+            }
         );
     }
 
     private void OnShamanPanelClosed()
     {
+        // Always restore key-close for future panels
+        ScenePanelManager.Instance.SetCanCloseWithKey(true);
+
         DayManager.Instance.SetFlag("shaman_visited_today");
         HideRemedyChoice();
 
-        ScenePanelManager.Instance.LockPlayer(true);
+        if (_panelClosedByChoice)
+        {
+            ScenePanelManager.Instance.LockPlayer(true);
 
-        DialogueManager.Instance.PlayDialogue(
-            DialogueSequence.Create(
-                new DialogueLine("", "It's getting late... I should check on Sio.")
-            ),
-            onComplete: () => ScenePanelManager.Instance.LockPlayer(false)
-        );
+            DialogueManager.Instance.PlayDialogue(
+                DialogueSequence.Create(
+                    new DialogueLine("", "It's getting late... I should check on Sio.")
+                ),
+                onComplete: () =>
+                {
+                    ScenePanelManager.Instance.LockPlayer(false);
+                    // This is what Day1Sequence is waiting on
+                    DayManager.Instance.SetFlag("shaman_return_complete");
+                }
+            );
+        }
+        else
+        {
+            // Player left without buying — still signal completion so
+            // Day1Sequence doesn't stall forever
+            DayManager.Instance.SetFlag("shaman_return_complete");
+        }
     }
 }

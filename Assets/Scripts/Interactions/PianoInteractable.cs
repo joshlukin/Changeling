@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class PianoInteractable : Interactable
 {
     [Header("Piano")]
@@ -17,7 +16,6 @@ public class PianoInteractable : Interactable
         new DialogueLine("Siofra", "Is it breakfast time?")
     };
 
-    // Fix: both stare lines have no speaker so the name panel stays hidden throughout
     private static readonly DialogueLine[] _stareLines = new DialogueLine[]
     {
         new DialogueLine("", "..."),
@@ -30,9 +28,42 @@ public class PianoInteractable : Interactable
         new DialogueLine("", "Don't forget to do your homework as well.")
     };
 
+    private static readonly DialogueLine[] _day1EveningLines = new DialogueLine[]
+    {
+        new DialogueLine("", "Ask what piano song she's practicing."),
+        new DialogueLine("Siofra", "It's a new one. Does it sound better?"),
+        new DialogueLine("", "...A lot better, actually.")
+    };
+
+    private static readonly DialogueLine[] _day2EveningLines = new DialogueLine[]
+    {
+        new DialogueLine("", "Did you manage to finish your homework?"),
+        new DialogueLine("Siofra", "It wasn't that hard."),
+        new DialogueLine("", "*sigh*"),
+        new DialogueLine("", "I'm sure you'll get it eventually.")
+    };
+
     protected override void OnInteract()
     {
         _interactCount++;
+
+        bool shamanVisitedToday = DayManager.Instance.GetFlag("shaman_visited_today");
+
+        // Set morning or evening flag for Day1Sequence / Day2Sequence to unblock
+        if (!shamanVisitedToday)
+        {
+            DayManager.Instance.SetFlag("piano_visited_morning");
+            Debug.Log("[Piano] Set piano_visited_morning");
+        }
+        else
+        {
+            DayManager.Instance.SetFlag("piano_visited_evening");
+            Debug.Log("[Piano] Set piano_visited_evening");
+
+            // Evening visit grants relationship bonus
+            DayManager.Instance.AddRelationship(10);
+        }
+
         DialogueLine[] lines = GetDialogueLines();
 
         ScenePanelManager.Instance.OpenPanelWithCallback(
@@ -51,6 +82,12 @@ public class PianoInteractable : Interactable
 
     private DialogueLine[] GetDialogueLines()
     {
+        bool shamanVisitedToday = DayManager.Instance.GetFlag("shaman_visited_today");
+        int day = DayManager.Instance.currentDay;
+
+        if (shamanVisitedToday)
+            return day >= 2 ? _day2EveningLines : _day1EveningLines;
+
         if (_interactCount >= 4)
             return _stareLines;
 
@@ -67,11 +104,8 @@ public class PianoInteractable : Interactable
         isHomeworkPlaced = true;
         DayManager.Instance.SetFlag("homework_placed");
 
-        if (homeworkProp != null)
-            homeworkProp.SetActive(true);
-
-        if (homeworkPlacementPrompt != null)
-            homeworkPlacementPrompt.SetActive(false);
+        if (homeworkProp != null) homeworkProp.SetActive(true);
+        if (homeworkPlacementPrompt != null) homeworkPlacementPrompt.SetActive(false);
 
         ScenePanelManager.Instance.ClosePanel();
     }
