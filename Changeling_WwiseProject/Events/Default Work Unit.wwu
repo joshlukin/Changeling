@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{2F5FD3C3-EDF6-4467-8964-CBBC884C1B2F}" SchemaVersion="133">
 	<Events>
-		<WorkUnit Name="Default Work Unit" ID="{2F5FD3C3-EDF6-4467-8964-CBBC884C1B2F}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{2F5FD3C3-EDF6-4467-8964-CBBC884C1B2F}" PersistMode="Standalone">
+			<ChildrenList>
+				<Folder Name="Events" ID="{93A3FFF2-0DAA-42D0-ACD9-31168475B069}" ShortID="101132804">
+					<ChildrenList>
+						<Event Name="Play_AMB_BedRM" ID="{431DC860-2292-4CD2-AC81-52F5EEDC405E}">
+							<ChildrenList>
+								<Action Name="" ID="{E6DE9DC4-9BB0-47E9-AB4D-98A39545C4AD}" ShortID="179257141">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_BedRM" ID="{6748E9C1-6328-4236-AC36-9959D465E4AC}" WorkUnitID="{EB76F7F4-3D08-4FF4-9E92-F4A2006037D4}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_AMB_LivingRM" ID="{5F67202D-8FB0-405E-8705-DE87B402B97D}">
+							<ChildrenList>
+								<Action Name="" ID="{F3347071-ED6F-45B4-ADD5-111A8D1D550F}" ShortID="195274015">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_LivingRM" ID="{EAF56DF9-080A-41A5-8F71-E49DB1928191}" WorkUnitID="{EB76F7F4-3D08-4FF4-9E92-F4A2006037D4}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_AMB_ShamanShop" ID="{D7A09A34-CA7E-4A1F-BEBF-95AE9B601BCB}">
+							<ChildrenList>
+								<Action Name="" ID="{4E4A491E-3A39-4428-AD01-88D75D8F1BDB}" ShortID="987467075">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_ShamanShop" ID="{C0AD8B5F-58B1-4F86-B90E-BEFB71E97132}" WorkUnitID="{EB76F7F4-3D08-4FF4-9E92-F4A2006037D4}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_AMB_AntiqueClock_Tick" ID="{84E9D70F-6516-4405-806B-B91D718216B7}">
+							<ChildrenList>
+								<Action Name="" ID="{4BA9D3B0-DCFA-4925-B098-64F38984BABA}" ShortID="64728549">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_AntiqueClock_Tick" ID="{A5B67373-0BB9-49A4-8824-7DABF698F5ED}" WorkUnitID="{EB76F7F4-3D08-4FF4-9E92-F4A2006037D4}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_AMB_FridgeHum" ID="{8DB199B8-95B2-43D9-B89D-95FA1F153746}">
+							<ChildrenList>
+								<Action Name="" ID="{14F0DE9A-E812-4515-B4F9-FCC0DF43FFF7}" ShortID="154606412">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="AMB_FridgeHum" ID="{E0B955A1-EA93-4BDA-908D-65DB8657A0E6}" WorkUnitID="{EB76F7F4-3D08-4FF4-9E92-F4A2006037D4}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+						<Event Name="Play_Footsteps" ID="{7F94B2AF-EA21-48AD-8304-9337C17483CD}">
+							<ChildrenList>
+								<Action Name="" ID="{46CE51B2-7681-4C31-83F6-0F2B504FCF1C}" ShortID="347885226">
+									<ReferenceList>
+										<Reference Name="Target">
+											<ObjectRef Name="Footsteps" ID="{404C6B74-E47E-4798-82AE-4E67189FFFB7}" WorkUnitID="{EB76F7F4-3D08-4FF4-9E92-F4A2006037D4}"/>
+										</Reference>
+									</ReferenceList>
+								</Action>
+							</ChildrenList>
+						</Event>
+					</ChildrenList>
+				</Folder>
+			</ChildrenList>
+		</WorkUnit>
 	</Events>
 </WwiseDocument>

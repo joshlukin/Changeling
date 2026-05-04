@@ -1,6 +1,48 @@
 Event	ID	Name			Wwise Object Path	Notes
-	2087200734	Play_MSC_MT_Melody			\Default Work Unit\Music\Play_MSC_MT_Melody	
+	1876429667	Play_AMB_ShamanShop			\Default Work Unit\Events\Play_AMB_ShamanShop	
+	2054611366	Play_AMB_AntiqueClock_Tick			\Default Work Unit\Events\Play_AMB_AntiqueClock_Tick	
+	2775297053	Play_AMB_BedRM			\Default Work Unit\Events\Play_AMB_BedRM	
+	3110274576	Play_AMB_FridgeHum			\Default Work Unit\Events\Play_AMB_FridgeHum	
+	3854155799	Play_Footsteps			\Default Work Unit\Events\Play_Footsteps	
+	4054701117	Play_AMB_LivingRM			\Default Work Unit\Events\Play_AMB_LivingRM	
+
+Switch Group	ID	Name			Wwise Object Path	Notes
+	1833605183	Footstep_Surface			\Default Work Unit\Footstep_Surface	
+
+Switch	ID	Name	Switch Group			Notes
+	2058049674	Wood	Footstep_Surface			
+	2412606308	Carpet	Footstep_Surface			
+	2637588553	Tile	Footstep_Surface			
+
+Effect plug-ins	ID	Name	Type				Notes
+	2699318881	AmbEQ	Wwise Parametric EQ			
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	942549132	MSC_MT_Melody	.cache\3B\{3BBBEE72-7464-F108-F392-73691208DC77}.wem		\Containers\Default Work Unit\Music\MSC_MT_Melody		7540460
+	83531769	SFX_FEET_Wood_3	.cache\1C\{1CC2A014-9AF0-F06C-9AA9-8804E69E2C69}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_3		57856
+	89678816	SFX_FEET_Tile_2	.cache\46\{46A30BBB-C444-9B89-0FFD-2622CD79416D}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_2		65864
+	94283702	SFX_FEET_Tile_7	.cache\19\{19D37796-27C6-9B1C-46FB-CE30715D71EF}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_7		77192
+	149305047	SFX_FEET_Wood_1	.cache\C3\{C3BE299F-1F9D-3721-4DFF-9F58BBEBA2B7}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_1		46012
+	174494944	SFX_FEET_Wood_4	.cache\8C\{8C74BEEA-77F0-D7E7-49DF-C6DF27EE96C4}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_4		47924
+	183674409	SFX_FEET_Tile_5	.cache\87\{87BAB7ED-52D7-7550-6D20-226A9D1F7D60}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_5		67252
+	194526124	SFX_FEET_Tile_6	.cache\7F\{7F033912-6340-520D-14D5-E6CEDBC443C4}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_6		87484
+	309488780	SFX_FEET_Carpet_6	.cache\D2\{D214F77C-0487-29AF-4D44-9C1C9FECE8CB}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_6		60476
+	410773159	SFX_FEET_Wood_7	.cache\6F\{6FA7A8AE-5BA6-8A0E-68AB-5A5588DC2EE2}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_7		52372
+	424104524	SFX_FEET_Carpet_3	.cache\74\{74ECF274-C06F-B154-8528-57EDDE8C624D}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_3		58396
+	478072410	SFX_FEET_Wood_6	.cache\CD\{CD0912ED-7E6E-ACE5-7CF8-1C93CA660088}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_6		53164
+	526873006	AMB_LivingRM	.cache\BB\{BB0550A1-E5A7-FF99-F1D4-25E20B4CF29F}.wem		\Containers\Default Work Unit\Ambience\AMB_LivingRM		9259448
+	554489174	SFX_FEET_Tile_8	.cache\9E\{9E962853-4051-27A3-778A-103DFEA97E5F}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_8		69796
+	639292306	AMB_BedRM	.cache\4F\{4FE7CBC6-0ED7-4933-4C33-BB8F37090E24}.wem		\Containers\Default Work Unit\Ambience\AMB_BedRM		9476228
+	649690559	SFX_FEET_Wood_2	.cache\57\{57881B86-D983-4256-AFF1-BB20306C397E}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_2		55356
+	704693165	SFX_FEET_Carpet_7	.cache\0C\{0CEFB694-9F5A-E0ED-E207-99044D4AB628}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_7		58080
+	765750766	SFX_FEET_Tile_1	.cache\1D\{1DE8068B-2DCE-B126-0AC0-7B6BD2EA2C7B}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_1		67864
+	793882098	SFX_FEET_Carpet_1	.cache\56\{56753654-6F99-ED22-92D4-D222B6148862}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_1		76132
+	801401364	AMB_FridgeHum	.cache\B1\{B1FCD4C3-BD57-C315-4C2F-DD46827A288B}.wem		\Containers\Default Work Unit\Ambience\AMB_FridgeHum		1848096
+	821940578	AMB_ShamanShop	.cache\9E\{9EC4C5A8-0930-5212-2E40-681C563C0F65}.wem		\Containers\Default Work Unit\Ambience\AMB_ShamanShop		8175580
+	891755208	SFX_FEET_Tile_3	.cache\0C\{0CA501BC-F71A-4018-8906-9239E88E5256}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_3		66332
+	895572148	SFX_FEET_Carpet_2	.cache\2B\{2BEF5A6A-3AF3-50DB-5FD1-343ED62F38C5}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_2		67208
+	915244861	SFX_FEET_Carpet_4	.cache\98\{98C07D1C-6356-37CE-FB8F-88353642F025}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_4		54156
+	925946169	SFX_FEET_Carpet_5	.cache\23\{2366BF0B-FB26-AFDF-965E-6A6A6858E72A}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_5		68284
+	929964306	AMB_AntiqueClock_Tick	.cache\6F\{6F1ACABD-31B9-9142-7691-CB2BE98185EA}.wem		\Containers\Default Work Unit\Ambience\AMB_AntiqueClock_Tick		1107096
+	979872708	SFX_FEET_Tile_4	.cache\59\{593755A5-B1C7-9C4A-E8BC-384DA6806E55}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_4		53532
+	1009779821	SFX_FEET_Wood_5	.cache\46\{46C3720F-EBED-9B19-18CD-DF59F95EF164}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_5		38924
 
