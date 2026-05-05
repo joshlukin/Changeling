@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -10,30 +11,52 @@ public class ShamanVisitInteractable : Interactable
     public Inventory playerInventory;
 
     [Header("Remedy Choice UI")]
+    [Tooltip("Root GameObject containing the two remedy choice buttons. Child of PanelRoot.")]
     public GameObject remedyChoiceRoot;
     public Button remedyButtonA;
     public Button remedyButtonB;
     public TextMeshProUGUI remedyALabel;
     public TextMeshProUGUI remedyBLabel;
 
+    [Header("Fallback Key Choice")]
+    [Tooltip("If buttons don't work, fallback key selects remedy A (Music Box).")]
+    public KeyCode remedyAKey = KeyCode.Alpha1;
+    [Tooltip("Fallback key selects remedy B (Incense).")]
+    public KeyCode remedyBKey = KeyCode.Alpha2;
+    [Tooltip("Optional: show key hints in the label text.")]
+    public bool showKeyHints = true;
+
     private bool _remedyPurchasedToday = false;
     private bool _panelClosedByChoice = false;
+    private bool _awaitingRemedyChoice = false;
 
     protected override bool CanInteract()
     {
         return !DayManager.Instance.GetFlag("shaman_visited_today");
     }
 
+    protected override void Update()
+    {
+        base.Update();
+
+        // Fallback keyboard input for remedy choice
+        // Works regardless of button click issues
+        if (_awaitingRemedyChoice)
+        {
+            if (Input.GetKeyDown(remedyAKey))
+                OnRemedyChosen(0);
+            else if (Input.GetKeyDown(remedyBKey))
+                OnRemedyChosen(1);
+        }
+    }
+
     protected override void OnInteract()
     {
         _remedyPurchasedToday = false;
         _panelClosedByChoice = false;
+        _awaitingRemedyChoice = false;
 
         SetupRemedyButtons();
-
-        // Prevent E from closing the panel while we're in the shaman scene —
-        // closing is handled exclusively by OnRemedyChosen or the player
-        // explicitly leaving without buying
         ScenePanelManager.Instance.SetCanCloseWithKey(false);
 
         ScenePanelManager.Instance.OpenPanelWithCallback(
@@ -55,32 +78,38 @@ public class ShamanVisitInteractable : Interactable
 
     private void ShowRemedyChoice()
     {
-        Debug.Log("[Shaman] ShowRemedyChoice called");
+        _awaitingRemedyChoice = true;
+
         if (remedyChoiceRoot != null)
             remedyChoiceRoot.SetActive(true);
     }
 
     private void HideRemedyChoice()
     {
+        _awaitingRemedyChoice = false;
+
         if (remedyChoiceRoot != null)
             remedyChoiceRoot.SetActive(false);
     }
 
     private void SetupRemedyButtons()
     {
-        // Hide until dialogue finishes
         HideRemedyChoice();
 
         var items = shamanInventory != null ? shamanInventory.items : null;
 
+        string nameA = (items != null && items.Count >= 1) ? items[0].itemName : "Empty";
+        string nameB = (items != null && items.Count >= 2) ? items[1].itemName : "Empty";
+
+        // Include key hints in label if enabled
         if (remedyALabel != null)
-            remedyALabel.text = (items != null && items.Count >= 1)
-                ? items[0].itemName : "Empty";
+            remedyALabel.text = showKeyHints ? $"[1] {nameA}" : nameA;
 
         if (remedyBLabel != null)
-            remedyBLabel.text = (items != null && items.Count >= 2)
-                ? items[1].itemName : "Empty";
+            remedyBLabel.text = showKeyHints ? $"[2] {nameB}" : nameB;
 
+        // Wire buttons normally — if they work, great
+        // If not, keyboard fallback handles it
         if (remedyButtonA != null)
         {
             remedyButtonA.onClick.RemoveAllListeners();
@@ -109,8 +138,6 @@ public class ShamanVisitInteractable : Interactable
         _panelClosedByChoice = true;
         HideRemedyChoice();
 
-        Debug.Log($"[Shaman] Player chose: {chosen.itemName}");
-
         DialogueManager.Instance.PlayDialogue(
             DialogueSequence.Create(
                 new DialogueLine("Shaman", $"The {chosen.itemName} will help her."),
@@ -118,7 +145,6 @@ public class ShamanVisitInteractable : Interactable
             ),
             onComplete: () =>
             {
-                // Re-enable key close now that the flow is complete
                 ScenePanelManager.Instance.SetCanCloseWithKey(true);
                 ScenePanelManager.Instance.ClosePanel();
             }
@@ -127,11 +153,10 @@ public class ShamanVisitInteractable : Interactable
 
     private void OnShamanPanelClosed()
     {
-        // Always restore key-close for future panels
         ScenePanelManager.Instance.SetCanCloseWithKey(true);
+        HideRemedyChoice();
 
         DayManager.Instance.SetFlag("shaman_visited_today");
-        HideRemedyChoice();
 
         if (_panelClosedByChoice)
         {
@@ -144,15 +169,12 @@ public class ShamanVisitInteractable : Interactable
                 onComplete: () =>
                 {
                     ScenePanelManager.Instance.LockPlayer(false);
-                    // This is what Day1Sequence is waiting on
                     DayManager.Instance.SetFlag("shaman_return_complete");
                 }
             );
         }
         else
         {
-            // Player left without buying — still signal completion so
-            // Day1Sequence doesn't stall forever
             DayManager.Instance.SetFlag("shaman_return_complete");
         }
     }

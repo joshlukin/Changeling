@@ -24,9 +24,10 @@ using UnityEngine;
 
 public class Day1Sequence : MonoBehaviour
 {
-    [Header("References")]
-    public DinnerCounterInteractable dinnerCounter;
-    public DinnerTableInteractable dinnerTable;
+    [Header("References")] 
+    public GameObject brunchTable;
+    public GameObject dinnerCounter;
+    public GameObject dinnerTable;
     public GameObject healthMonitorUI;
     public Day2Sequence day2Sequence;
 
@@ -97,20 +98,24 @@ public class Day1Sequence : MonoBehaviour
         yield return WaitForFlag("shaman_visited_today");
         yield return WaitForFlag("shaman_return_complete");
 
+        brunchTable.GetComponent<TableInteractable>().plateProp.SetActive(false);
+        Debug.Log("Starting evening sequence");
         yield return StartCoroutine(EveningSequence());
+        
     }
 
     IEnumerator EveningSequence()
     {
-        ObjectiveManager.Instance.SetObjective("Check on Siofra.");
+        ObjectiveManager.Instance.SetObjective("Check on Siofra again.");
         yield return WaitForFlag("piano_visited_evening");
 
-        if (dinnerCounter != null) dinnerCounter.gameObject.SetActive(true);
-
+        Debug.Log($"[Day1] Activating dinner counter: {dinnerCounter != null}");
+        dinnerCounter.SetActive(true);
+        
         ObjectiveManager.Instance.SetObjective("Make dinner.");
         yield return WaitForFlag("dinner_made");
 
-        if (dinnerTable != null) dinnerTable.gameObject.SetActive(true);
+        dinnerTable.SetActive(true);
 
         ObjectiveManager.Instance.SetObjective("Call Siofra for dinner.");
         yield return WaitForFlag("dinner_placed");
@@ -121,7 +126,7 @@ public class Day1Sequence : MonoBehaviour
         ));
 
         ObjectiveManager.Instance.SetObjective("Check the health monitor.");
-        yield return WaitForFlag("health_checked");
+        //yield return WaitForFlag("health_checked");
 
         yield return StartCoroutine(EndOfDay());
     }

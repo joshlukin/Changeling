@@ -53,12 +53,10 @@ public class PianoInteractable : Interactable
         if (!shamanVisitedToday)
         {
             DayManager.Instance.SetFlag("piano_visited_morning");
-            Debug.Log("[Piano] Set piano_visited_morning");
         }
         else
         {
             DayManager.Instance.SetFlag("piano_visited_evening");
-            Debug.Log("[Piano] Set piano_visited_evening");
 
             // Evening visit grants relationship bonus
             DayManager.Instance.AddRelationship(10);

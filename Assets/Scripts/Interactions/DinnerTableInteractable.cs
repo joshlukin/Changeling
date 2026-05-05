@@ -13,7 +13,6 @@ public class DinnerTableInteractable : Interactable
     private void Start()
     {
         repeatable = false;
-        gameObject.SetActive(false);
     }
 
     protected override bool CanInteract()

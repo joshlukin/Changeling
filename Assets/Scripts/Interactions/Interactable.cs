@@ -63,8 +63,7 @@ public abstract class Interactable : MonoBehaviour
     public void OnPlayerEnterRange()
     {
         _playerInRange = true;
-
-        // Only show indicator if interaction is actually possible
+        
         if (indicatorObject != null)
             indicatorObject.SetActive(CanInteract());
 

@@ -43,4 +43,5 @@ public class TableInteractable : Interactable
             }
         );
     }
+    
 }

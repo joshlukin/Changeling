@@ -12,8 +12,6 @@ public class DinnerCounterInteractable : Interactable
     private void Start()
     {
         repeatable = false;
-        // Starts disabled — Day1Sequence enables this GameObject when ready
-        gameObject.SetActive(false);
     }
 
     protected override bool CanInteract()
