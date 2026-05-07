@@ -28,6 +28,9 @@ public class Day2Sequence : MonoBehaviour
     [Tooltip("The shaman visit interactable — re-enabled for Day 2.")]
     public ShamanVisitInteractable shamanVisit;
 
+    public Item day2NewItem;
+    public GameObject shamanObj;
+
     private const float PollInterval = 0.3f;
 
     // -------------------------------------------------------
@@ -89,6 +92,7 @@ public class Day2Sequence : MonoBehaviour
         }
 
         // 3. Prompt shaman visit
+        shamanObj.GetComponent<Inventory>().AddItem(day2NewItem);
         ObjectiveManager.Instance.SetObjective("Visit the Shaman.");
         yield return WaitForFlag("shaman_visited_today");
         yield return WaitForFlag("shaman_return_complete");
@@ -111,20 +115,13 @@ public class Day2Sequence : MonoBehaviour
         if (dinnerCounter != null) dinnerCounter.gameObject.SetActive(true);
 
         ObjectiveManager.Instance.SetObjective("Make dinner.");
-        yield return WaitForFlag("dinner_made");
+        yield return WaitForFlag("dinner_made_day2");
 
         if (dinnerTable != null) dinnerTable.gameObject.SetActive(true);
 
         ObjectiveManager.Instance.SetObjective("Call Siofra for dinner.");
-        yield return WaitForFlag("dinner_placed");
-
-        // Siofra enters kitchen — dialogue
-        yield return PlayAndWait(DialogueSequence.Create(
-            new DialogueLine("", "Are you hungry yet? The food's done!"),
-            new DialogueLine("Siofra", "Mashed potatoes?"),
-            new DialogueLine("", "Yes, hurry and eat so you can finish your homework."),
-            new DialogueLine("Siofra", "Yes, mother.")
-        ));
+        yield return WaitForFlag("dinner_placed_day2");
+        
 
         // Health monitor
         ObjectiveManager.Instance.SetObjective("Check the health monitor.");

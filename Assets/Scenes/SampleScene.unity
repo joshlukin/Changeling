@@ -883,7 +883,16 @@ MonoBehaviour:
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
-  kitchenArt: {fileID: 0}
+  dayManager: {fileID: 0}
+  dayData:
+  - art: {fileID: 0}
+    panelLabel: Dinner Counter Day 1
+    dinnerDialogue: {fileID: 11400000, guid: e9c238449cc3848f2ba50f26af4744df, type: 2}
+    dinnerMadeFlag: dinner_made_day1
+  - art: {fileID: 0}
+    panelLabel: Dinner Counter Day 2
+    dinnerDialogue: {fileID: 11400000, guid: 13557abddc6ad42fdb21a1cd564741ea, type: 2}
+    dinnerMadeFlag: dinner_made_day2
 --- !u!4 &126476760
 Transform:
   m_ObjectHideFlags: 0
@@ -1268,6 +1277,7 @@ MonoBehaviour:
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
+  dayManager: {fileID: 0}
   calendarArt: {fileID: 0}
   panelLabel: Medicine Reminders
 --- !u!23 &160328120
@@ -1681,9 +1691,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Day2Sequence
   pianoMusicSource: {fileID: 0}
-  dinnerCounter: {fileID: 0}
-  dinnerTable: {fileID: 0}
-  shamanVisit: {fileID: 0}
+  dinnerCounter: {fileID: 126476759}
+  dinnerTable: {fileID: 433069207}
+  shamanVisit: {fileID: 2118743886}
+  day2NewItem: {fileID: 11400000, guid: 5f7bcb9cb02a3484d814f4669db8dc7e, type: 2}
+  shamanObj: {fileID: 1794266533}
 --- !u!4 &303224224
 Transform:
   m_ObjectHideFlags: 0
@@ -2319,8 +2331,20 @@ MonoBehaviour:
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
-  tableArt: {fileID: 0}
-  plateProp: {fileID: 272813852}
+  dayManager: {fileID: 0}
+  dayData:
+  - art: {fileID: 0}
+    panelLabel: Dinner table day 1
+    callDialogue: {fileID: 11400000, guid: 4df196cf07613471bb94c90a5815a403, type: 2}
+    dinnerMadeFlag: dinner_made_day1
+    dinnerPlacedFlag: dinner_placed_day1
+    plateProp: {fileID: 272813852}
+  - art: {fileID: 0}
+    panelLabel: Dinner table day 2
+    callDialogue: {fileID: 11400000, guid: cfd788708f6ee4899a99c91e85da497d, type: 2}
+    dinnerMadeFlag: dinner_made_day2
+    dinnerPlacedFlag: dinner_placed_day2
+    plateProp: {fileID: 272813852}
 --- !u!4 &434018116 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5563684690388482929, guid: 32b1e49bb1f6643b4bfef5e9dfeafc37, type: 3}
@@ -3172,6 +3196,7 @@ MonoBehaviour:
   currentDay: 1
   relationshipStat: 0
   daughterHealth: 90
+  mostRecentFlag: 
 --- !u!4 &852367976
 Transform:
   m_ObjectHideFlags: 0
@@ -3378,6 +3403,7 @@ MonoBehaviour:
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
+  dayManager: {fileID: 0}
   kitchenArt: {fileID: 0}
 --- !u!1 &925874378
 GameObject:
@@ -3575,6 +3601,7 @@ MonoBehaviour:
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
+  dayManager: {fileID: 0}
   tableArt: {fileID: 0}
   plateProp: {fileID: 1889128045}
 --- !u!1 &1052322121
@@ -5111,6 +5138,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 2937952180854084144, guid: 691d201409042b143af4574240386e30, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 5940163653335853446, guid: 691d201409042b143af4574240386e30, type: 3}
       propertyPath: m_LocalPosition.x
       value: 7.36
@@ -5247,6 +5278,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
   detectionRadius: 3
+  _currentShaman: {fileID: 0}
+  _playerInventory: {fileID: 0}
 --- !u!114 &1772953869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6156,7 +6189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a76a3d8fde44f30b756c481c62e24c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PianoInteractable
-  interactRadius: 2.7
+  interactRadius: 3
   interactLabel: Interact
   repeatable: 1
   indicatorObject: {fileID: 0}
@@ -6165,6 +6198,7 @@ MonoBehaviour:
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
+  dayManager: {fileID: 0}
   pianoArt: {fileID: 0}
   homeworkProp: {fileID: 1986753977}
   homeworkPlacementPrompt: {fileID: 1637325406}
@@ -6315,6 +6349,7 @@ MonoBehaviour:
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
+  dayManager: {fileID: 0}
   shamanArt: {fileID: 0}
   shamanInventory: {fileID: 1794266535}
   playerInventory: {fileID: 1772953854}

@@ -108,23 +108,16 @@ public class Day1Sequence : MonoBehaviour
     {
         ObjectiveManager.Instance.SetObjective("Check on Siofra again.");
         yield return WaitForFlag("piano_visited_evening");
-
-        Debug.Log($"[Day1] Activating dinner counter: {dinnerCounter != null}");
+        
         dinnerCounter.SetActive(true);
         
         ObjectiveManager.Instance.SetObjective("Make dinner.");
-        yield return WaitForFlag("dinner_made");
-
+        yield return WaitForFlag("dinner_made_day1");
         dinnerTable.SetActive(true);
 
         ObjectiveManager.Instance.SetObjective("Call Siofra for dinner.");
-        yield return WaitForFlag("dinner_placed");
-
-        yield return PlayAndWait(DialogueSequence.Create(
-            new DialogueLine("Siofra", "Steamed eggs, my favorite!"),
-            new DialogueLine("", "She seems a little better today.")
-        ));
-
+        yield return WaitForFlag("dinner_placed_day1");
+        
         ObjectiveManager.Instance.SetObjective("Check the health monitor.");
         //yield return WaitForFlag("health_checked");
 
@@ -134,11 +127,7 @@ public class Day1Sequence : MonoBehaviour
     IEnumerator EndOfDay()
     {
         ObjectiveManager.Instance.ClearObjective();
-
-        yield return PlayAndWait(DialogueSequence.Create(
-            new DialogueLine("", "Hmm... the remedy must have worked. She's gotten better."),
-            new DialogueLine("", "I should keep this up.")
-        ));
+        
 
         yield return FadeManager.Instance.FadeOut(1.5f);
 

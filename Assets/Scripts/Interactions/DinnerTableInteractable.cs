@@ -1,47 +1,64 @@
 using UnityEngine;
 
-/// <summary>
-/// Evening version of the table — calls Siofra for dinner.
-/// Starts disabled. Day1Sequence enables it after dinner_made is set.
-/// </summary>
+[System.Serializable]
+public struct DinnerTableDayData
+{
+    public Sprite art;
+    public string panelLabel;
+    public DialogueSequence callDialogue;  // plays after panel closes (calling Siofra)
+    public string dinnerMadeFlag;          // must be true to interact (e.g. "dinner_made")
+    public string dinnerPlacedFlag;        // set on interaction (e.g. "dinner_placed")
+    public GameObject plateProp;           // food prop to enable after placement
+}
+
 public class DinnerTableInteractable : Interactable
 {
-    [Header("Dinner Table")]
-    public Sprite tableArt;
-    public GameObject plateProp;
+    [Header("Day Data")]
+    [Tooltip("One entry per day. Index 0 = Day 1, Index 1 = Day 2, etc.")]
+    public DinnerTableDayData[] dayData;
 
     private void Start()
     {
         repeatable = false;
     }
 
+    private int GetDayIndex()
+    {
+        return Mathf.Clamp(DayManager.Instance.currentDay - 1, 0, dayData.Length - 1);
+    }
+
     protected override bool CanInteract()
     {
-        return DayManager.Instance.GetFlag("dinner_made")
-               && !DayManager.Instance.GetFlag("dinner_placed");
+        if (dayData == null || dayData.Length == 0) return false;
+        DinnerTableDayData data = dayData[GetDayIndex()];
+        return DayManager.Instance.GetFlag(data.dinnerMadeFlag)
+               && !DayManager.Instance.GetFlag(data.dinnerPlacedFlag);
     }
 
     protected override void OnInteract()
     {
+        if (dayData == null || dayData.Length == 0) return;
+
+        DinnerTableDayData data = dayData[GetDayIndex()];
+
         ScenePanelManager.Instance.OpenPanel(
-            tableArt,
-            "Dining Table",
+            data.art,
+            data.panelLabel,
             onClose: () =>
             {
-                DayManager.Instance.SetFlag("dinner_placed");
+                DayManager.Instance.SetFlag(data.dinnerPlacedFlag);
 
-                if (plateProp != null)
-                    plateProp.SetActive(true);
+                if (data.plateProp != null)
+                    data.plateProp.SetActive(true);
 
-                ScenePanelManager.Instance.LockPlayer(true);
-
-                DialogueManager.Instance.PlayDialogue(
-                    DialogueSequence.Create(
-                        new DialogueLine("", "Dinner's ready!"),
-                        new DialogueLine("Siofra", "Steamed eggs, my favorite!")
-                    ),
-                    onComplete: () => ScenePanelManager.Instance.LockPlayer(false)
-                );
+                if (data.callDialogue != null)
+                {
+                    ScenePanelManager.Instance.LockPlayer(true);
+                    DialogueManager.Instance.PlayDialogue(
+                        data.callDialogue,
+                        onComplete: () => ScenePanelManager.Instance.LockPlayer(false)
+                    );
+                }
             }
         );
     }

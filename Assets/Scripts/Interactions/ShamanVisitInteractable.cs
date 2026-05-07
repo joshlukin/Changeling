@@ -107,9 +107,7 @@ public class ShamanVisitInteractable : Interactable
 
         if (remedyBLabel != null)
             remedyBLabel.text = showKeyHints ? $"[2] {nameB}" : nameB;
-
-        // Wire buttons normally — if they work, great
-        // If not, keyboard fallback handles it
+        
         if (remedyButtonA != null)
         {
             remedyButtonA.onClick.RemoveAllListeners();

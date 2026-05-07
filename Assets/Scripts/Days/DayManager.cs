@@ -25,6 +25,8 @@ public class DayManager : MonoBehaviour
 
     // One-off story flags: e.g. "has_opened_curtains", "has_placed_homework"
     private Dictionary<string, bool> _flags = new Dictionary<string, bool>();
+
+    [Header("Debug")] public string mostRecentFlag;
     
 
     void Awake()
@@ -49,6 +51,7 @@ public class DayManager : MonoBehaviour
     public void SetFlag(string key, bool value = true)
     {
         _flags[key] = value;
+        mostRecentFlag = key;
     }
 
     public bool GetFlag(string key)
@@ -72,5 +75,10 @@ public class DayManager : MonoBehaviour
     public void ModifyDaughterHealth(float delta)
     {
         SetDaughterHealth(daughterHealth + delta);
+    }
+
+    public static int GetCurrentDay(DayManager instance)
+    {
+        return instance.currentDay;
     }
 }

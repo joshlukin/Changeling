@@ -1,39 +1,53 @@
 using UnityEngine;
 
-/// <summary>
-/// Evening version of the kitchen counter — makes dinner.
-/// Starts disabled. Day1Sequence enables it after the evening piano visit.
-/// </summary>
+[System.Serializable]
+public struct DinnerCounterDayData
+{
+    public Sprite art;
+    public string panelLabel;
+    public DialogueSequence dinnerDialogue;
+    public string dinnerMadeFlag; // e.g. "dinner_made"
+}
+
 public class DinnerCounterInteractable : Interactable
 {
-    [Header("Dinner")]
-    public Sprite kitchenArt;
+    [Header("Day Data")]
+    [Tooltip("One entry per day. Index 0 = Day 1, Index 1 = Day 2, etc.")]
+    public DinnerCounterDayData[] dayData;
 
     private void Start()
     {
         repeatable = false;
     }
 
+    private int GetDayIndex()
+    {
+        return Mathf.Clamp(DayManager.Instance.currentDay - 1, 0, dayData.Length - 1);
+    }
+
     protected override bool CanInteract()
     {
-        return !DayManager.Instance.GetFlag("dinner_made");
+        if (dayData == null || dayData.Length == 0) return false;
+        return !DayManager.Instance.GetFlag(dayData[GetDayIndex()].dinnerMadeFlag);
+        
     }
 
     protected override void OnInteract()
     {
+        if (dayData == null || dayData.Length == 0) return;
+
+        DinnerCounterDayData data = dayData[GetDayIndex()];
+
         ScenePanelManager.Instance.OpenPanelWithCallback(
-            kitchenArt,
-            "Kitchen",
+            data.art,
+            data.panelLabel,
             onClose: null,
             onPanelReady: () =>
             {
-                DayManager.Instance.SetFlag("dinner_made");
+                DayManager.Instance.SetFlag(data.dinnerMadeFlag);
 
-                DialogueManager.Instance.PlayDialogue(
-                    DialogueSequence.Create(
-                        new DialogueLine("", "Steamed eggs. Her favorite.")
-                    )
-                );
+                if (data.dinnerDialogue != null)
+                    DialogueManager.Instance.PlayDialogue(data.dinnerDialogue);
             }
         );
     }

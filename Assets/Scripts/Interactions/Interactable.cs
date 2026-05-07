@@ -32,6 +32,8 @@ public abstract class Interactable : MonoBehaviour
     private Vector3 _indicatorBaseScale;
     private float _animTimer = 0f;
 
+    [Header("References")]
+    [SerializeField] public DayManager dayManager;
     protected virtual void Awake()
     {
         if (indicatorObject == null)
