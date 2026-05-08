@@ -18,29 +18,46 @@ public class PianoInteractable : Interactable
 
     private static readonly DialogueLine[] _stareLines = new DialogueLine[]
     {
-        new DialogueLine("", "..."),
-        new DialogueLine("", "...")
+        new DialogueLine("You", "..."),
+        new DialogueLine("Siofra", "...")
     };
 
     private static readonly DialogueLine[] _homeworkLines = new DialogueLine[]
     {
-        new DialogueLine("", "Oh, you're still practicing piano."),
-        new DialogueLine("", "Don't forget to do your homework as well.")
+        new DialogueLine("You", "Oh, you're still practicing piano."),
+        new DialogueLine("You", "Don't forget to do your homework as well.")
     };
 
     private static readonly DialogueLine[] _day1EveningLines = new DialogueLine[]
     {
-        new DialogueLine("", "Ask what piano song she's practicing."),
+        new DialogueLine("You", "Ask what piano song she's practicing."),
         new DialogueLine("Siofra", "It's a new one. Does it sound better?"),
-        new DialogueLine("", "...A lot better, actually.")
+        new DialogueLine("You", "...A lot better, actually.")
     };
 
     private static readonly DialogueLine[] _day2EveningLines = new DialogueLine[]
     {
-        new DialogueLine("", "Did you manage to finish your homework?"),
+        new DialogueLine("You", "Did you manage to finish your homework?"),
         new DialogueLine("Siofra", "It wasn't that hard."),
-        new DialogueLine("", "*sigh*"),
-        new DialogueLine("", "I'm sure you'll get it eventually.")
+        new DialogueLine("You", "*sigh*"),
+        new DialogueLine("You", "I'm sure you'll get it eventually.")
+    };
+
+    private static readonly DialogueLine[] _day5EveningLines = new DialogueLine[]
+    {
+        new DialogueLine("Siofra", "Mom?"),
+        new DialogueLine("You", "..."),
+        new DialogueLine("Siofra", "... Is everything alright?"),
+        new DialogueLine("You", "..."),
+        new DialogueLine("Siofra", "Is dinner ready?"),
+        new DialogueLine("You", "... I don’t have time to prepare dinner tonight."),
+        new DialogueLine("Siofra", "Huh!? Did something happen? What are we going to eat? I can-"),
+        new DialogueLine("You", "Go to your room."),
+        new DialogueLine("Siofra", "Mom!? What’s going on? Did I do something wrong? Please, just-"),
+        new DialogueLine("You", "Now."),
+        new DialogueLine("Siofra", "..."),
+        new DialogueLine("You", "..."),
+        new DialogueLine("Siofra", "... yes, mom.")
     };
 
     protected override void OnInteract()
@@ -84,14 +101,17 @@ public class PianoInteractable : Interactable
         int day = DayManager.Instance.currentDay;
 
         if (shamanVisitedToday)
-            return day >= 2 ? _day2EveningLines : _day1EveningLines;
+            return day >= 2 && day !=5 ? _day2EveningLines : _day1EveningLines;
 
-        if (_interactCount >= 4)
+        if (_interactCount >= 4 && day!=5)
             return _stareLines;
 
-        if (DayManager.Instance.GetFlag("kitchen_objective_complete") && !isHomeworkPlaced)
+        if (DayManager.Instance.GetFlag("kitchen_objective_complete") && !isHomeworkPlaced && day!=5)
             return _homeworkLines;
-
+        
+        if(day == 5)
+            return _day5EveningLines;
+        
         return _normalLines;
     }
 

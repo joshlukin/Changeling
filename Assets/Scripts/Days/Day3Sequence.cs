@@ -13,32 +13,24 @@ using UnityEngine;
 /// 5. Health monitor — health dropped to 81%, player alarmed
 /// 6. End of day
 /// </summary>
-public class Day2Sequence : MonoBehaviour
+public class Day3Sequence : MonoBehaviour
 {
-    [Header("References")]
-    [Tooltip("Audio source that plays piano music on wake-up if relationship >= 10.")]
-    public AudioSource pianoMusicSource;
 
     [Tooltip("Evening dinner counter — disabled until after shaman return.")]
     public DinnerCounterInteractable dinnerCounter;
 
     [Tooltip("Evening dinner table — disabled until dinner is made.")]
     public DinnerTableInteractable dinnerTable;
+    
 
-    [Tooltip("The shaman visit interactable — re-enabled for Day 2.")]
-    public ShamanVisitInteractable shamanVisit;
-
-    public Item day2NewItem;
-    public GameObject shamanObj;
-    public Day3Sequence day3Sequence;
     private const float PollInterval = 0.3f;
     public Sprite bedroomArt;
-
+    public Day4Sequence day4Sequence;
     // -------------------------------------------------------
-    // Entry point — called by Day1Sequence.EndOfDay()
+    // Entry point — called by Day2Sequence.EndOfDay()
     // -------------------------------------------------------
 
-    public void StartDay2()
+    public void StartDay3()
     {
         // Reset day-specific flags while preserving cross-day state
         ResetDayFlags();
@@ -54,10 +46,7 @@ public class Day2Sequence : MonoBehaviour
         DayManager.Instance.SetFlag("dinner_placed", false);
         DayManager.Instance.SetFlag("health_checked", false);
         DayManager.Instance.SetFlag("piano_visited_evening", false);
-
-        // Re-enable shaman visit
-        if (shamanVisit != null)
-            shamanVisit.gameObject.SetActive(true);
+        
 
         // Keep dinner objects disabled until evening
         if (dinnerCounter != null) dinnerCounter.gameObject.SetActive(false);
@@ -70,6 +59,7 @@ public class Day2Sequence : MonoBehaviour
 
     IEnumerator MorningSequence()
     {
+        // 1. Fade in
         FadeManager.Instance.SnapToBlack();
 
         // 2. Open the bedroom art panel BEFORE fading in
@@ -87,64 +77,49 @@ public class Day2Sequence : MonoBehaviour
 
         // 4. Hide the [E] prompt — dialogue advances lines instead
         ScenePanelManager.Instance.SetContinuePromptVisible(false);
+        
+        ScenePanelManager.Instance.ClosePanel();
+        ObjectiveManager.Instance.SetObjective("Talk to your husband");
+        // 2. First father interaction
+        yield return PlayAndWait(DialogueSequence.Create(
+            new DialogueLine("", "*There's knocking at the door*"),
+            new DialogueLine("Siofra", "Must be dad"),
+            new DialogueLine("Your husband", "It’s really about time you give me a key…"),
+            new DialogueLine("You", "…"),
+            new DialogueLine("You", "I don’t need you visiting Siofra, you’re a terrible influence in her life!”"),
+            new DialogueLine("Your husband", "*sigh* ... We talked about th-"),
+            new DialogueLine("You", "I don’t need you plaguing her mind with your dangerous ideas, can’t you see—you’re harming her!"),
+            new DialogueLine("Your husband", "ook, I don’t have time for this right now. Whether you like it or not, I have mandated visitation rights and it’s my weekend. Hand her over"),
+            new DialogueLine("You", "… fine. Goodbye, Sio.")
+        ));
 
-
-        // 2. Wake up — piano music plays if relationship is high enough
-        if (DayManager.Instance.relationshipStat >= 10)
-        {
-            if (pianoMusicSource != null)
-                pianoMusicSource.Play();
-
-            yield return PlayAndWait(DialogueSequence.Create(
-                new DialogueLine("", "...That's Sio playing."),
-                new DialogueLine("", "She's up early.")
-            ));
-        }
-        else
-        {
-            yield return PlayAndWait(DialogueSequence.Create(
-                new DialogueLine("", "...Another morning.")
-            ));
-        }
-
-        // 3. Prompt shaman visit
-        shamanObj.GetComponent<Inventory>().AddItem(day2NewItem);
-        ObjectiveManager.Instance.SetObjective("Visit the Shaman.");
-        yield return WaitForFlag("shaman_visited_today");
-        yield return WaitForFlag("shaman_return_complete");
-
-        yield return StartCoroutine(EveningSequence());
-    }
-
-    // -------------------------------------------------------
-    // Evening
-    // -------------------------------------------------------
-
-    IEnumerator EveningSequence()
-    {
-        ObjectiveManager.Instance.SetObjective("Check on Siofra.");
-
-        // Wait for evening piano visit
-        yield return WaitForFlag("piano_visited_evening");
-
-        // Unlock dinner
-        if (dinnerCounter != null) dinnerCounter.gameObject.SetActive(true);
-
-        ObjectiveManager.Instance.SetObjective("Make dinner.");
-        yield return WaitForFlag("dinner_made_day2");
-
-        if (dinnerTable != null) dinnerTable.gameObject.SetActive(true);
-
-        ObjectiveManager.Instance.SetObjective("Call Siofra for dinner.");
-        yield return WaitForFlag("dinner_placed_day2");
+        yield return PlayAndWait(DialogueSequence.Create(
+            new DialogueLine("You", "Practice piano for a bit, I need to talk to your dad"),
+            new DialogueLine("Siofra", "Yes mother"),
+            new DialogueLine("You", "Listen, the shaman is saying it's getting really bad."),
+            new DialogueLine("Your husband", "Who now? What’s getting bad, do you even hear yourself!?"),
+            new DialogueLine("You", "Our daughter! She's sick! We need to DO something! YOU need to do something! Do you know anything about your own daughter?"),
+            new DialogueLine("Your husband", "Wow, hey! I think you should calm down, alright, let’s just-"),
+            new DialogueLine("You", "You don't care about her at all, do you?"),
+            new DialogueLine("Your husband", "Just tell me what's going on!"),
+            new DialogueLine("You", "She's slowly turning into a..a horrible monster! She’s going to die, she's going to die-"),
+            new DialogueLine("Your husband", "Hey… hey! Look at me and just breathe! Breathe…"),
+            new DialogueLine("Your husband", "I’ll take care of her, okay?"),
+            new DialogueLine("Your husband", "You need to get some rest, I’ll make sure nothing happens to her."),
+            new DialogueLine("You", "Okay… okay…"),
+            new DialogueLine("You", "Please, just promise me you’ll keep an eye on her at all times… and be on the lookout for any strange signs or abnormal changes in her behavior."),
+            new DialogueLine("Your husband", "I will, I promise. I’ll let you know if anything happens."),
+            new DialogueLine("You", "Okay………. okay…."),
+            new DialogueLine("Your husband", "Hey, just wait here, okay? I’ll go get Sio, you should lay down and get some rest, you need it."),
+            new DialogueLine("You", "….. alright")
+        ));
         
 
-        // Health monitor
-        ObjectiveManager.Instance.SetObjective("Check the health monitor.");
-        //yield return WaitForFlag("health_checked");
-
+        ObjectiveManager.Instance.SetObjective("Go to bed for the day");
         yield return StartCoroutine(EndOfDay());
     }
+
+
 
     // -------------------------------------------------------
     // End of day
@@ -160,27 +135,22 @@ public class Day2Sequence : MonoBehaviour
         DayManager.Instance.SetDaughterHealth(81f);
 
         yield return PlayAndWait(DialogueSequence.Create(
-            new DialogueLine("You (to yourself)", "81%..."),
-            new DialogueLine("You (to yourself)", "It's lower than before..."),
-            new DialogueLine("You (to yourself)", "I need to consult the Shaman about this tomorrow.")
+            new DialogueLine("You (to yourself)", "I hope she doesn't get worse when she's with her dad...")
         ));
-        
-        ObjectiveManager.Instance.ClearObjective();
+
+        yield return FadeManager.Instance.FadeOut(1.5f);
 
         DayManager.Instance.AdvanceDay();
-        
-        yield return FadeManager.Instance.FadeOut(1.5f);
-        
-        if (day3Sequence != null)
+        if (day4Sequence != null)
         {
+            Debug.Log("[Day3Sequence] Day 3 complete.");
             gameObject.SetActive(false);
-            day3Sequence.StartDay3();
+            day4Sequence.StartDay4();
         }
         else
         {
-            Debug.LogWarning("[Day1Sequence] No Day3Sequence assigned.");
+            Debug.LogWarning("[Day3Sequence] No Day4Sequence assigned.");
         } 
-        Debug.Log("[Day3Sequence] Day 3 complete.");
     }
 
     // -------------------------------------------------------

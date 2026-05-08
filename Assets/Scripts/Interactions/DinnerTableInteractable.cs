@@ -46,7 +46,6 @@ public class DinnerTableInteractable : Interactable
             data.panelLabel,
             onClose: () =>
             {
-                DayManager.Instance.SetFlag(data.dinnerPlacedFlag);
 
                 if (data.plateProp != null)
                     data.plateProp.SetActive(true);
@@ -56,8 +55,11 @@ public class DinnerTableInteractable : Interactable
                     ScenePanelManager.Instance.LockPlayer(true);
                     DialogueManager.Instance.PlayDialogue(
                         data.callDialogue,
-                        onComplete: () => ScenePanelManager.Instance.LockPlayer(false)
-                    );
+                        onComplete: () =>
+                        {
+                            ScenePanelManager.Instance.LockPlayer(false);
+                            DayManager.Instance.SetFlag(data.dinnerPlacedFlag);
+                        });
                 }
             }
         );

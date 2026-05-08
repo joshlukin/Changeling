@@ -67,8 +67,8 @@ public class Day1Sequence : MonoBehaviour
 
         // 5. Opening monologue plays over the bedroom art
         yield return PlayAndWait(DialogueSequence.Create(
-            new DialogueLine("", "...Another morning."),
-            new DialogueLine("", "I should check the calendar.")
+            new DialogueLine("You (to yourself)", "...Another morning."),
+            new DialogueLine("You (to yourself)", "I should check the calendar.")
         ));
 
         // 6. Close bedroom art — player now sees the 3D hallway
@@ -127,11 +127,10 @@ public class Day1Sequence : MonoBehaviour
     IEnumerator EndOfDay()
     {
         ObjectiveManager.Instance.ClearObjective();
-        
-
-        yield return FadeManager.Instance.FadeOut(1.5f);
 
         DayManager.Instance.AdvanceDay();
+        
+        yield return FadeManager.Instance.FadeOut(1.5f);
         
         if (day2Sequence != null)
         {
