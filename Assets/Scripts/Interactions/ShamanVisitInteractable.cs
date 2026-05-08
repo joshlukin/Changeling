@@ -10,6 +10,18 @@ public class ShamanVisitInteractable : Interactable
     public Inventory shamanInventory;
     public Inventory playerInventory;
 
+    [Header("Wwise Events")]
+    public AK.Wwise.Event shamanArtStartEvent;
+    public AK.Wwise.Event shamanArtStopEvent;
+    public AK.Wwise.Event remedyButtonClickEvent;
+
+    [Header("Wwise States")]
+    public AK.Wwise.State normalGameplayState;
+    public AK.Wwise.State shamanVisitState;
+
+    [Header("Audio Post Target")]
+    public GameObject playerObject;
+
     [Header("Remedy Choice UI")]
     [Tooltip("Root GameObject containing the two remedy choice buttons. Child of PanelRoot.")]
     public GameObject remedyChoiceRoot;
@@ -58,6 +70,19 @@ public class ShamanVisitInteractable : Interactable
 
         SetupRemedyButtons();
         ScenePanelManager.Instance.SetCanCloseWithKey(false);
+
+        // Switch Wwise into the Shaman Visit mix/state.
+        // This should duck or mute world room sounds without pausing/resuming 3D emitters.
+        if (shamanVisitState != null)
+        {
+            shamanVisitState.SetValue();
+        }
+
+        // Play shaman visit start sound on the player.
+        if (shamanArtStartEvent != null)
+        {
+            shamanArtStartEvent.Post(playerObject != null ? playerObject : gameObject);
+        }
 
         ScenePanelManager.Instance.OpenPanelWithCallback(
             shamanArt,
@@ -126,6 +151,11 @@ public class ShamanVisitInteractable : Interactable
         if (_remedyPurchasedToday) return;
         if (shamanInventory == null || shamanInventory.items.Count <= index) return;
 
+        if (remedyButtonClickEvent != null)
+        {
+            remedyButtonClickEvent.Post(playerObject != null ? playerObject : gameObject);
+        }
+
         Item chosen = shamanInventory.items[index];
         shamanInventory.items.RemoveAt(index);
 
@@ -151,6 +181,19 @@ public class ShamanVisitInteractable : Interactable
 
     private void OnShamanPanelClosed()
     {
+        // Play shaman visit stop sound on the player.
+        if (shamanArtStopEvent != null)
+        {
+            shamanArtStopEvent.Post(playerObject != null ? playerObject : gameObject);
+        }
+
+        // Return Wwise to the normal gameplay mix/state.
+        // This restores the world mix without relocating 3D sounds.
+        if (normalGameplayState != null)
+        {
+            normalGameplayState.SetValue();
+        }
+
         ScenePanelManager.Instance.SetCanCloseWithKey(true);
         HideRemedyChoice();
 

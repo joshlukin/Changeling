@@ -1,5 +1,15 @@
+State Group	ID	Name			Wwise Object Path	Notes
+	612083820	Gameplay_Audio_State			\Default Work Unit\Gameplay_Audio_State	
+
+State	ID	Name	State Group			Notes
+	19887312	ShamanVisit	Gameplay_Audio_State			
+	748895195	None	Gameplay_Audio_State			
+	1160234136	Normal	Gameplay_Audio_State			
+
 Audio Bus	ID	Name			Wwise Object Path	Notes
+	1324340420	Piano			\Default Work Unit\Main Audio Bus\Home\Piano	
 	2246998526	Main Audio Bus			\Default Work Unit\Main Audio Bus	
+	3181406844	Home			\Default Work Unit\Main Audio Bus\Home	
 
 Audio Devices	ID	Name	Type				Notes
 	2317455096	No_Output	No Output			

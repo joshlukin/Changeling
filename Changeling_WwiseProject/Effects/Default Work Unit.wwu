@@ -13,6 +13,26 @@
 						<Property Name="GainBand3" Type="Real32" Value="0.1481481"/>
 					</PropertyList>
 				</Effect>
+				<Effect Name="general_low_control" ID="{0EC16BD7-6CB1-47B8-8C5A-58BDB21394CC}" PluginName="Wwise Parametric EQ" CompanyID="0" PluginID="105" PluginType="3">
+					<PropertyList>
+						<Property Name="FrequencyBand2" Type="Real32" Value="291.448"/>
+						<Property Name="GainBand2" Type="Real32" Value="-4.37401"/>
+						<Property Name="QFactorBand2" Type="Real32" Value="0.5"/>
+					</PropertyList>
+				</Effect>
+				<Effect Name="ClockEQ" ID="{58CBBAE1-5AFB-4AC1-943D-89614EF21AF2}" PluginName="Wwise Parametric EQ" CompanyID="0" PluginID="105" PluginType="3">
+					<PropertyList>
+						<Property Name="FilterTypeBand3" Type="int32" Value="0"/>
+						<Property Name="FrequencyBand1" Type="Real32" Value="218.1005"/>
+						<Property Name="FrequencyBand2" Type="Real32" Value="702.4511"/>
+						<Property Name="FrequencyBand3" Type="Real32" Value="2602.298"/>
+						<Property Name="GainBand1" Type="Real32" Value="3.161987"/>
+						<Property Name="GainBand2" Type="Real32" Value="-8.552916"/>
+						<Property Name="GainBand3" Type="Real32" Value="-0.05183585"/>
+						<Property Name="OnOffBand3" Type="bool" Value="True"/>
+						<Property Name="RolloffRateBand3" Type="int32" Value="36"/>
+					</PropertyList>
+				</Effect>
 			</ChildrenList>
 		</WorkUnit>
 	</Effects>

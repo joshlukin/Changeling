@@ -16,9 +16,6 @@ using UnityEngine;
 public class Day2Sequence : MonoBehaviour
 {
     [Header("References")]
-    [Tooltip("Audio source that plays piano music on wake-up if relationship >= 10.")]
-    public AudioSource pianoMusicSource;
-
     [Tooltip("Evening dinner counter — disabled until after shaman return.")]
     public DinnerCounterInteractable dinnerCounter;
 
@@ -33,6 +30,30 @@ public class Day2Sequence : MonoBehaviour
     public Day3Sequence day3Sequence;
     private const float PollInterval = 0.3f;
     public Sprite bedroomArt;
+
+    [Header("Wwise Start Of Day Events")]
+    public AK.Wwise.Event startOfDayResumeEvent;
+
+    [Header("Wwise Bedroom Events")]
+    public AK.Wwise.Event bedroomWakeUpEvent;
+    public AK.Wwise.Event bedroomLeaveEvent;
+
+    [Header("Wwise Relationship Events")]
+    [Tooltip("Plays when relationshipStat >= 10 and Sio is playing piano in the morning.")]
+    public AK.Wwise.Event relationshipPianoMorningEvent;
+
+    [Tooltip("The GameObject the piano sound should emit from. Usually the piano object.")]
+    public GameObject relationshipPianoAudioObject;
+
+    [Header("Wwise Day Transition Events")]
+    [Tooltip("Stops a specific SFX that should not continue into the next day.")]
+    public AK.Wwise.Event stopSfxBeforeNextDayEvent;
+
+    [Tooltip("The GameObject that originally posted/plays that SFX.")]
+    public GameObject sfxToStopAudioObject;
+
+    [Header("Audio Post Target")]
+    public GameObject audioPostTarget;
 
     // -------------------------------------------------------
     // Entry point — called by Day1Sequence.EndOfDay()
@@ -72,28 +93,43 @@ public class Day2Sequence : MonoBehaviour
     {
         FadeManager.Instance.SnapToBlack();
 
-        // 2. Open the bedroom art panel BEFORE fading in
+        if (startOfDayResumeEvent != null)
+        {
+            startOfDayResumeEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
+
+        // Open the bedroom art panel BEFORE fading in.
         // This means the player never sees the 3D hallway during the intro.
-        // OpenPanel is used (not WithCallback) so the [E] prompt shows —
-        // but we immediately hide it since dialogue controls advancing here.
         ScenePanelManager.Instance.OpenPanel(
             bedroomArt,
             "Bedroom",
             onClose: null
         );
 
-        // 3. Fade in — player "opens eyes" into the bedroom art
+        if (bedroomWakeUpEvent != null)
+        {
+            bedroomWakeUpEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
+
+        // Fade in — player "opens eyes" into the bedroom art
         yield return FadeManager.Instance.FadeIn(1.5f);
 
-        // 4. Hide the [E] prompt — dialogue advances lines instead
+        // Hide the [E] prompt — dialogue advances lines instead
         ScenePanelManager.Instance.SetContinuePromptVisible(false);
 
-
-        // 2. Wake up — piano music plays if relationship is high enough
+        // Wake up — Wwise piano event plays if relationship is high enough
         if (DayManager.Instance.relationshipStat >= 10)
         {
-            if (pianoMusicSource != null)
-                pianoMusicSource.Play();
+            if (relationshipPianoMorningEvent != null)
+            {
+                relationshipPianoMorningEvent.Post(
+                    relationshipPianoAudioObject != null
+                        ? relationshipPianoAudioObject
+                        : audioPostTarget != null
+                            ? audioPostTarget
+                            : gameObject
+                );
+            }
 
             yield return PlayAndWait(DialogueSequence.Create(
                 new DialogueLine("", "...That's Sio playing."),
@@ -107,7 +143,17 @@ public class Day2Sequence : MonoBehaviour
             ));
         }
 
-        // 3. Prompt shaman visit
+        // Close bedroom art — player now leaves the bedroom panel
+        ScenePanelManager.Instance.ClosePanel();
+
+        if (bedroomLeaveEvent != null)
+        {
+            bedroomLeaveEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
+
+        yield return new WaitForSeconds(0.3f);
+
+        // Prompt shaman visit
         shamanObj.GetComponent<Inventory>().AddItem(day2NewItem);
         ObjectiveManager.Instance.SetObjective("Visit the Shaman.");
         yield return WaitForFlag("shaman_visited_today");
@@ -138,7 +184,6 @@ public class Day2Sequence : MonoBehaviour
         ObjectiveManager.Instance.SetObjective("Call Siofra for dinner.");
         yield return WaitForFlag("dinner_placed_day2");
         
-
         // Health monitor
         ObjectiveManager.Instance.SetObjective("Check the health monitor.");
         //yield return WaitForFlag("health_checked");
@@ -168,6 +213,11 @@ public class Day2Sequence : MonoBehaviour
         ObjectiveManager.Instance.ClearObjective();
 
         DayManager.Instance.AdvanceDay();
+
+        if (stopSfxBeforeNextDayEvent != null && sfxToStopAudioObject != null)
+        {
+            stopSfxBeforeNextDayEvent.Post(sfxToStopAudioObject);
+        }
         
         yield return FadeManager.Instance.FadeOut(1.5f);
         
@@ -180,6 +230,7 @@ public class Day2Sequence : MonoBehaviour
         {
             Debug.LogWarning("[Day1Sequence] No Day3Sequence assigned.");
         } 
+
         Debug.Log("[Day3Sequence] Day 3 complete.");
     }
 

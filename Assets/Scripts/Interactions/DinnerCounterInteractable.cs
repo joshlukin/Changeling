@@ -6,7 +6,11 @@ public struct DinnerCounterDayData
     public Sprite art;
     public string panelLabel;
     public DialogueSequence dinnerDialogue;
-    public string dinnerMadeFlag; // e.g. "dinner_made"
+    public string dinnerMadeFlag; // e.g. "dinner_made_day1"
+
+    [Header("Wwise Events")]
+    public AK.Wwise.Event dinnerStartEvent;
+    public AK.Wwise.Event dinnerStopEvent;
 }
 
 public class DinnerCounterInteractable : Interactable
@@ -14,6 +18,9 @@ public class DinnerCounterInteractable : Interactable
     [Header("Day Data")]
     [Tooltip("One entry per day. Index 0 = Day 1, Index 1 = Day 2, etc.")]
     public DinnerCounterDayData[] dayData;
+
+    [Header("Audio Post Target")]
+    public GameObject playerObject;
 
     private void Start()
     {
@@ -29,7 +36,6 @@ public class DinnerCounterInteractable : Interactable
     {
         if (dayData == null || dayData.Length == 0) return false;
         return !DayManager.Instance.GetFlag(dayData[GetDayIndex()].dinnerMadeFlag);
-        
     }
 
     protected override void OnInteract()
@@ -41,9 +47,20 @@ public class DinnerCounterInteractable : Interactable
         ScenePanelManager.Instance.OpenPanelWithCallback(
             data.art,
             data.panelLabel,
-            onClose: null,
+            onClose: () =>
+            {
+                if (data.dinnerStopEvent != null)
+                {
+                    data.dinnerStopEvent.Post(playerObject != null ? playerObject : gameObject);
+                }
+            },
             onPanelReady: () =>
             {
+                if (data.dinnerStartEvent != null)
+                {
+                    data.dinnerStartEvent.Post(playerObject != null ? playerObject : gameObject);
+                }
+
                 DayManager.Instance.SetFlag(data.dinnerMadeFlag);
 
                 if (data.dinnerDialogue != null)

@@ -4,6 +4,14 @@ public class KitchenWindowInteractable : Interactable
 {
     public Sprite art;
     public DayManager DayManagerInstance;
+
+    [Header("Wwise Events")]
+    public AK.Wwise.Event windowLookStartEvent;
+    public AK.Wwise.Event windowLookStopEvent;
+
+    [Header("Audio Post Target")]
+    public GameObject playerObject;
+
     private void Start()
     {
         repeatable = false;
@@ -20,9 +28,20 @@ public class KitchenWindowInteractable : Interactable
         ScenePanelManager.Instance.OpenPanelWithCallback(
             art,
             "Kitchen Window",
-            onClose: null,
+            onClose: () =>
+            {
+                if (windowLookStopEvent != null)
+                {
+                    windowLookStopEvent.Post(playerObject != null ? playerObject : gameObject);
+                }
+            },
             onPanelReady: () =>
             {
+                if (windowLookStartEvent != null)
+                {
+                    windowLookStartEvent.Post(playerObject != null ? playerObject : gameObject);
+                }
+
                 DayManager.Instance.SetFlag("living_room_checked");
             }
         );

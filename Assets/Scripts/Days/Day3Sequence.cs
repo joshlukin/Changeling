@@ -15,17 +15,35 @@ using UnityEngine;
 /// </summary>
 public class Day3Sequence : MonoBehaviour
 {
-
     [Tooltip("Evening dinner counter — disabled until after shaman return.")]
     public DinnerCounterInteractable dinnerCounter;
 
     [Tooltip("Evening dinner table — disabled until dinner is made.")]
     public DinnerTableInteractable dinnerTable;
     
-
     private const float PollInterval = 0.3f;
     public Sprite bedroomArt;
     public Day4Sequence day4Sequence;
+
+    [Header("Wwise Events")]
+    [Tooltip("Plays at the very start of Day 3 when the first dialogue box appears.")]
+    public AK.Wwise.Event dayStartFirstDialogueEvent;
+
+    [Tooltip("Plays right after the line 'Must be dad'.")]
+    public AK.Wwise.Event afterMustBeDadEvent;
+
+    [Tooltip("Pauses or ducks audio during the Day 3 to Day 4 transition.")]
+    public AK.Wwise.Event endOfDayPauseEvent;
+
+    [Tooltip("Optional: stops a specific SFX that should not continue into Day 4.")]
+    public AK.Wwise.Event stopSfxBeforeNextDayEvent;
+
+    [Header("Audio Post Target")]
+    public GameObject audioPostTarget;
+
+    [Tooltip("The GameObject that originally posted/plays the SFX you want to stop.")]
+    public GameObject sfxToStopAudioObject;
+
     // -------------------------------------------------------
     // Entry point — called by Day2Sequence.EndOfDay()
     // -------------------------------------------------------
@@ -47,7 +65,6 @@ public class Day3Sequence : MonoBehaviour
         DayManager.Instance.SetFlag("health_checked", false);
         DayManager.Instance.SetFlag("piano_visited_evening", false);
         
-
         // Keep dinner objects disabled until evening
         if (dinnerCounter != null) dinnerCounter.gameObject.SetActive(false);
         if (dinnerTable != null) dinnerTable.gameObject.SetActive(false);
@@ -80,10 +97,25 @@ public class Day3Sequence : MonoBehaviour
         
         ScenePanelManager.Instance.ClosePanel();
         ObjectiveManager.Instance.SetObjective("Talk to your husband");
-        // 2. First father interaction
+
+        if (dayStartFirstDialogueEvent != null)
+        {
+            dayStartFirstDialogueEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
+
+        // First father interaction — part 1
         yield return PlayAndWait(DialogueSequence.Create(
             new DialogueLine("", "*There's knocking at the door*"),
-            new DialogueLine("Siofra", "Must be dad"),
+            new DialogueLine("Siofra", "Must be dad")
+        ));
+
+        if (afterMustBeDadEvent != null)
+        {
+            afterMustBeDadEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
+
+        // First father interaction — part 2
+        yield return PlayAndWait(DialogueSequence.Create(
             new DialogueLine("Your husband", "It’s really about time you give me a key…"),
             new DialogueLine("You", "…"),
             new DialogueLine("You", "I don’t need you visiting Siofra, you’re a terrible influence in her life!”"),
@@ -114,12 +146,9 @@ public class Day3Sequence : MonoBehaviour
             new DialogueLine("You", "….. alright")
         ));
         
-
         ObjectiveManager.Instance.SetObjective("Go to bed for the day");
         yield return StartCoroutine(EndOfDay());
     }
-
-
 
     // -------------------------------------------------------
     // End of day
@@ -138,9 +167,23 @@ public class Day3Sequence : MonoBehaviour
             new DialogueLine("You (to yourself)", "I hope she doesn't get worse when she's with her dad...")
         ));
 
-        yield return FadeManager.Instance.FadeOut(1.5f);
+        if (endOfDayPauseEvent != null)
+        {
+            endOfDayPauseEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
+
+        if (stopSfxBeforeNextDayEvent != null && sfxToStopAudioObject != null)
+        {
+            stopSfxBeforeNextDayEvent.Post(sfxToStopAudioObject);
+        }
+
+        yield return FadeManager.Instance.FadeOut(2.5f);
+
+        // Stay black briefly so the pause/stop has time to be felt
+        yield return new WaitForSeconds(2.0f);
 
         DayManager.Instance.AdvanceDay();
+
         if (day4Sequence != null)
         {
             Debug.Log("[Day3Sequence] Day 3 complete.");

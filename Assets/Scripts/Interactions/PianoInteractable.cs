@@ -1,8 +1,17 @@
 using UnityEngine;
+
 public class PianoInteractable : Interactable
 {
     [Header("Piano")]
     public Sprite pianoArt;
+
+    [Header("Wwise Events")]
+    public AK.Wwise.Event pianoInterruptEvent;
+    public AK.Wwise.Event pianoResumeEvent;
+
+    [Header("Audio Post Target")]
+    [Tooltip("The GameObject that is actually playing the piano loop. Usually the piano object with the AkAmbient / Wwise emitter.")]
+    public GameObject pianoAudioObject;
 
     [Header("Homework")]
     public GameObject homeworkProp;
@@ -62,6 +71,11 @@ public class PianoInteractable : Interactable
 
     protected override void OnInteract()
     {
+        if (pianoInterruptEvent != null && pianoAudioObject != null)
+        {
+            pianoInterruptEvent.Post(pianoAudioObject);
+        }
+
         _interactCount++;
 
         bool shamanVisitedToday = DayManager.Instance.GetFlag("shaman_visited_today");
@@ -88,7 +102,13 @@ public class PianoInteractable : Interactable
         ScenePanelManager.Instance.OpenPanelWithCallback(
             pianoArt,
             "Living Room",
-            onClose: null,
+            onClose: () =>
+            {
+                if (pianoResumeEvent != null && pianoAudioObject != null)
+                {
+                    pianoResumeEvent.Post(pianoAudioObject);
+                }
+            },
             onPanelReady: () =>
             {
                 UpdateHomeworkPromptVisibility();

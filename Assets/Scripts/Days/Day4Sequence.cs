@@ -27,6 +27,36 @@ public class Day4Sequence : MonoBehaviour
 
     private const float PollInterval = 0.3f;
 
+    [Header("Wwise Start Of Day Events")]
+    [Tooltip("Re-engages / resumes audio after the Day 3 to Day 4 transition.")]
+    public AK.Wwise.Event startOfDayResumeEvent;
+
+    [Header("Wwise Story Events")]
+    [Tooltip("Plays right before the line: 'Huh? That sound… What time is it?'")]
+    public AK.Wwise.Event beforeHuhSoundEvent;
+
+    [Tooltip("The object the alarm sound should emit from. Assign your alarm clock / window / source object here.")]
+    public GameObject alarmAudioObject;
+
+    [Tooltip("Plays right before the line: 'Huh? What did I just kick?'")]
+    public AK.Wwise.Event beforeKickLineEvent;
+
+    [Tooltip("Plays right after the line: 'We’re back!'")]
+    public AK.Wwise.Event afterWereBackEvent;
+
+    [Header("Wwise End Of Day Events")]
+    [Tooltip("Pauses or ducks audio during the Day 4 to Day 5 transition.")]
+    public AK.Wwise.Event endOfDayPauseEvent;
+
+    [Tooltip("Optional: stops a specific SFX that should not continue into Day 5.")]
+    public AK.Wwise.Event stopSfxBeforeNextDayEvent;
+
+    [Header("Audio Post Target")]
+    public GameObject audioPostTarget;
+
+    [Tooltip("The GameObject that originally posted/plays the SFX you want to stop.")]
+    public GameObject sfxToStopAudioObject;
+
     // -------------------------------------------------------
     // Entry Point
     // -------------------------------------------------------
@@ -62,6 +92,11 @@ public class Day4Sequence : MonoBehaviour
     {
         FadeManager.Instance.SnapToBlack();
 
+        if (startOfDayResumeEvent != null)
+        {
+            startOfDayResumeEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
+
         ScenePanelManager.Instance.OpenPanel(
             bedroomArt,
             "Bedroom",
@@ -71,6 +106,11 @@ public class Day4Sequence : MonoBehaviour
         yield return FadeManager.Instance.FadeIn(2f);
 
         ScenePanelManager.Instance.SetContinuePromptVisible(false);
+
+        if (beforeHuhSoundEvent != null)
+        {
+            beforeHuhSoundEvent.Post(alarmAudioObject != null ? alarmAudioObject : audioPostTarget != null ? audioPostTarget : gameObject);
+        }
 
         yield return PlayAndWait(DialogueSequence.Create(
             new DialogueLine("You", "Huh? That sound… What time is it?")
@@ -113,6 +153,11 @@ public class Day4Sequence : MonoBehaviour
 
         yield return WaitForFlag("daughter_room_finished");
 
+        if (beforeKickLineEvent != null)
+        {
+            beforeKickLineEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
+
         yield return PlayAndWait(DialogueSequence.Create(
             new DialogueLine("You", "Huh? What did I just kick?")
         ));
@@ -127,10 +172,17 @@ public class Day4Sequence : MonoBehaviour
     IEnumerator DoorSequence()
     {
         ObjectiveManager.Instance.SetObjective("Answer the front door.");
-        
+
+        if (afterWereBackEvent != null)
+        {
+            afterWereBackEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
 
         yield return PlayAndWait(DialogueSequence.Create(
-            new DialogueLine("Your husband", "We’re back!"),
+            new DialogueLine("Your husband", "We’re back!")
+        ));
+
+        yield return PlayAndWait(DialogueSequence.Create(
             new DialogueLine("You", "..."),
             new DialogueLine("Your husband", "You know what you were telling me about earlier?"),
             new DialogueLine("Your husband", "Well, I got worried, and I ended up taking her to the doctor"),
@@ -162,7 +214,6 @@ public class Day4Sequence : MonoBehaviour
         
         yield return WaitForFlag("dinner_placed_day4");
         
-
         ObjectiveManager.Instance.SetObjective("Leave the kitchen.");
 
         yield return StartCoroutine(EndOfDay());
@@ -176,7 +227,21 @@ public class Day4Sequence : MonoBehaviour
     {
         ObjectiveManager.Instance.ClearObjective();
 
-        yield return FadeManager.Instance.FadeOut(1.5f);
+        if (endOfDayPauseEvent != null)
+        {
+            endOfDayPauseEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
+
+        if (stopSfxBeforeNextDayEvent != null && sfxToStopAudioObject != null)
+        {
+            stopSfxBeforeNextDayEvent.Post(sfxToStopAudioObject);
+        }
+
+        yield return FadeManager.Instance.FadeOut(2.5f);
+
+        // Stay black briefly so the pause/stop has time to be felt
+        yield return new WaitForSeconds(2.0f);
+
         Debug.Log("[Day4Sequence] Day 4 complete.");
         DayManager.Instance.AdvanceDay();
 
@@ -189,7 +254,6 @@ public class Day4Sequence : MonoBehaviour
         {
             Debug.LogWarning("[Day4Sequence] No Day5Sequence assigned.");
         }
-        
     }
 
     // -------------------------------------------------------

@@ -8,6 +8,12 @@ public class TableInteractable : Interactable
     [Tooltip("The food plate prop that appears on the table after placement.")]
     public GameObject plateProp;
 
+    [Header("Wwise Events")]
+    public AK.Wwise.Event platePutDownEvent;
+
+    [Header("Audio Post Target")]
+    public GameObject playerObject;
+
     private void Start()
     {
         repeatable = false;
@@ -28,6 +34,11 @@ public class TableInteractable : Interactable
             onClose: () =>
             {
                 DayManager.Instance.SetFlag("food_placed");
+
+                if (platePutDownEvent != null)
+                {
+                    platePutDownEvent.Post(playerObject != null ? playerObject : gameObject);
+                }
 
                 if (plateProp != null)
                     plateProp.SetActive(true);

@@ -1,10 +1,52 @@
 Event	ID	Name			Wwise Object Path	Notes
+	207736963	Resume_Day			\Default Work Unit\Events\Resume_Day	
+	275305171	Pause_MSC_Piano_Practice			\Default Work Unit\Events\Pause_MSC_Piano_Practice	
+	353220968	Stop_MSC_Piano_Practice_2			\Default Work Unit\Events\Stop_MSC_Piano_Practice_2	
+	353220972	Stop_MSC_Piano_Practice_6			\Default Work Unit\Events\Stop_MSC_Piano_Practice_6	
+	353220975	Stop_MSC_Piano_Practice_5			\Default Work Unit\Events\Stop_MSC_Piano_Practice_5	
+	599117759	Play_SFX_Sequence_CookNothing			\Default Work Unit\Events\Play_SFX_Sequence_CookNothing	
+	627428667	Play_SFX_Sequence_CookBrunch_			\Default Work Unit\Events\Play_SFX_Sequence_CookBrunch_	
+	744723048	Stop_AMB_WindowView			\Default Work Unit\Events\Stop_AMB_WindowView	
+	764553212	Play_AMB_BedRMNature			\Default Work Unit\Events\Play_AMB_BedRMNature	
+	957775786	Play_AMB_WindowView			\Default Work Unit\Events\Play_AMB_WindowView	
+	967822038	Stop_AMB_BedRMNature			\Default Work Unit\Events\Stop_AMB_BedRMNature	
+	1020409322	Answer_Door			\Default Work Unit\Events\Answer_Door	
+	1491981051	Stop_MSC_Piano_Practice			\Default Work Unit\Events\Stop_MSC_Piano_Practice	
+	1584042692	Play_UI_Dlgbox_Click			\Default Work Unit\Events\Play_UI_Dlgbox_Click	
+	1596565608	Play_SFX_Sequence_CookSaltyEgg			\Default Work Unit\Events\Play_SFX_Sequence_CookSaltyEgg	
+	1688348708	Resume_MSC_Piano_Practice			\Default Work Unit\Events\Resume_MSC_Piano_Practice	
+	1716460137	Stop_SFX_Sequence_CookBrunch_			\Default Work Unit\Events\Stop_SFX_Sequence_CookBrunch_	
 	1876429667	Play_AMB_ShamanShop			\Default Work Unit\Events\Play_AMB_ShamanShop	
+	1931013505	Play_SFX_DoorBell			\Default Work Unit\Events\Play_SFX_DoorBell	
 	2054611366	Play_AMB_AntiqueClock_Tick			\Default Work Unit\Events\Play_AMB_AntiqueClock_Tick	
-	2775297053	Play_AMB_BedRM			\Default Work Unit\Events\Play_AMB_BedRM	
+	2059171582	Play_SFX_DoorClose			\Default Work Unit\Events\Play_SFX_DoorClose	
+	2239754645	Play_AMB_BedRM2			\Default Work Unit\Events\Play_AMB_BedRM2	
+	2244850542	Exit_Shaman			\Default Work Unit\Events\Exit_Shaman	
+	2639462742	Enter_BedRM			\Default Work Unit\Events\Enter_BedRM	
+	2712935946	Stop_SFX_Sequence_CookSaltyEgg			\Default Work Unit\Events\Stop_SFX_Sequence_CookSaltyEgg	
+	2809718780	Play_UI_DlgBox_Open			\Default Work Unit\Events\Play_UI_DlgBox_Open	
+	2812370049	Play_MSC_Piano_Practice_5			\Default Work Unit\Events\Play_MSC_Piano_Practice_5	
+	2812370050	Play_MSC_Piano_Practice_6			\Default Work Unit\Events\Play_MSC_Piano_Practice_6	
+	2812370054	Play_MSC_Piano_Practice_2			\Default Work Unit\Events\Play_MSC_Piano_Practice_2	
+	2843641589	Play_UI_Shop_NoBuy			\Default Work Unit\Events\Play_UI_Shop_NoBuy	
+	2939623756	Play_UI_Calender_Open			\Default Work Unit\Events\Play_UI_Calender_Open	
+	3005763777	Stop_SFX_Sequence_CookSteamEgg			\Default Work Unit\Events\Stop_SFX_Sequence_CookSteamEgg	
+	3073766000	Play_SFX_Plate_PutDown			\Default Work Unit\Events\Play_SFX_Plate_PutDown	
 	3110274576	Play_AMB_FridgeHum			\Default Work Unit\Events\Play_AMB_FridgeHum	
+	3137797809	Play_MSC_Piano_Practice			\Default Work Unit\Events\Play_MSC_Piano_Practice	
+	3153616062	Play_UI_Shop_Click			\Default Work Unit\Events\Play_UI_Shop_Click	
+	3387554074	Play_SFX_DoorOpen			\Default Work Unit\Events\Play_SFX_DoorOpen	
+	3445097902	Pause_Day			\Default Work Unit\Events\Pause_Day	
+	3484770217	Play_SFX_Sequence_CookMashedPotato			\Default Work Unit\Events\Play_SFX_Sequence_CookMashedPotato	
+	3582646562	Enter_Shaman			\Default Work Unit\Events\Enter_Shaman	
+	3719179586	Exit_BedRM			\Default Work Unit\Events\Exit_BedRM	
+	3802464087	Play_SFX_Sequence_CookSteamEgg			\Default Work Unit\Events\Play_SFX_Sequence_CookSteamEgg	
 	3854155799	Play_Footsteps			\Default Work Unit\Events\Play_Footsteps	
+	3926566707	Stop_SFX_Sequence_CookMashedPotato			\Default Work Unit\Events\Stop_SFX_Sequence_CookMashedPotato	
+	3975685262	Play_SFX_CrumpledPaper			\Default Work Unit\Events\Play_SFX_CrumpledPaper	
+	4001806499	Play_SFX_AntiqueClock_Alarm			\Default Work Unit\Events\Play_SFX_AntiqueClock_Alarm	
 	4054701117	Play_AMB_LivingRM			\Default Work Unit\Events\Play_AMB_LivingRM	
+	4165082961	Stop_SFX_Sequence_CookNothing			\Default Work Unit\Events\Stop_SFX_Sequence_CookNothing	
 
 Switch Group	ID	Name			Wwise Object Path	Notes
 	1833605183	Footstep_Surface			\Default Work Unit\Footstep_Surface	
@@ -16,33 +58,64 @@ Switch	ID	Name	Switch Group			Notes
 
 Effect plug-ins	ID	Name	Type				Notes
 	2699318881	AmbEQ	Wwise Parametric EQ			
+	3933564587	ClockEQ	Wwise Parametric EQ			
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	27093217	UI_Calender_Open	.cache\3A\{3AF5AED7-456D-FFA5-F3F0-45473A2E1420}.wem		\Containers\Default Work Unit\UI\UI_Calender_Open		222652
 	83531769	SFX_FEET_Wood_3	.cache\1C\{1CC2A014-9AF0-F06C-9AA9-8804E69E2C69}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_3		57856
 	89678816	SFX_FEET_Tile_2	.cache\46\{46A30BBB-C444-9B89-0FFD-2622CD79416D}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_2		65864
 	94283702	SFX_FEET_Tile_7	.cache\19\{19D37796-27C6-9B1C-46FB-CE30715D71EF}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_7		77192
+	116730219	UI_DlgBox_Click_5	.cache\77\{77736A32-D040-72E3-00AE-BCF07D90A100}.wem		\Containers\Default Work Unit\UI\Dlgbox_Click\UI_DlgBox_Click_5		169132
+	125333945	UI_DlgBox_Click_1	.cache\E7\{E7CDF93E-A374-3BB2-D0CD-332206B5EFCD}.wem		\Containers\Default Work Unit\UI\Dlgbox_Click\UI_DlgBox_Click_1		168096
+	128777385	UI_DlgBox_Click_6	.cache\A5\{A5D28A7F-467F-C850-F667-AB2378C29FDF}.wem		\Containers\Default Work Unit\UI\Dlgbox_Click\UI_DlgBox_Click_6		169128
 	149305047	SFX_FEET_Wood_1	.cache\C3\{C3BE299F-1F9D-3721-4DFF-9F58BBEBA2B7}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_1		46012
 	174494944	SFX_FEET_Wood_4	.cache\8C\{8C74BEEA-77F0-D7E7-49DF-C6DF27EE96C4}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_4		47924
 	183674409	SFX_FEET_Tile_5	.cache\87\{87BAB7ED-52D7-7550-6D20-226A9D1F7D60}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_5		67252
 	194526124	SFX_FEET_Tile_6	.cache\7F\{7F033912-6340-520D-14D5-E6CEDBC443C4}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_6		87484
-	309488780	SFX_FEET_Carpet_6	.cache\D2\{D214F77C-0487-29AF-4D44-9C1C9FECE8CB}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_6		60476
+	208081752	UI_Shop_Click_1	.cache\28\{2815BEBE-342F-BD08-0A5A-FDB18B765775}.wem		\Containers\Default Work Unit\UI\Shop_Click\UI_Shop_Click_1		77296
+	226157424	SFX_Sequence_CookMashedPotato	.cache\FE\{FEF4E6E8-22D9-2B1C-159B-0CC9C8F1F17B}.wem		\Containers\Default Work Unit\SFX\SFX_Sequence_CookMashedPotato		1379356
+	298628006	UI_DlgBox_Click_2	.cache\EC\{EC74EDFB-7C51-60DE-D440-4FC2CB6C8D52}.wem		\Containers\Default Work Unit\UI\Dlgbox_Click\UI_DlgBox_Click_2		168096
+	303200827	MSC_Piano_Practice	.cache\F3\{F328786D-0516-7D49-65AD-0EF662912816}.wem		\Containers\Default Work Unit\Music\MSC_Piano_Practice		11904096
+	309488780	SFX_FEET_Carpet_6	.cache\05\{059128D9-1649-95B4-4E60-129A9279BC24}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_6		60476
+	344554770	UI_Shop_Click_4	.cache\C6\{C66C91BB-BBE7-86BE-4806-511E23D1C3D2}.wem		\Containers\Default Work Unit\UI\Shop_Click\UI_Shop_Click_4		96096
+	361549219	SFX_Sequence_SteamEgg	.cache\F6\{F6865735-1353-8E64-C4CF-7257D4E402A2}.wem		\Containers\Default Work Unit\SFX\SFX_Sequence_SteamEgg		2930984
+	401628962	SFX_CrumpledPaper	.cache\1C\{1CF27BBE-BB9C-7ED1-5669-B71E7F6ABCCD}.wem		\Containers\Default Work Unit\SFX\SFX_CrumpledPaper		112096
 	410773159	SFX_FEET_Wood_7	.cache\6F\{6FA7A8AE-5BA6-8A0E-68AB-5A5588DC2EE2}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_7		52372
+	421666663	AMB_BedRM2	.cache\78\{785A25E5-7064-E3DB-F76F-3E57E8F90FE0}.wem		\Containers\Default Work Unit\Ambience\AMB_BedRM2		5760096
 	424104524	SFX_FEET_Carpet_3	.cache\74\{74ECF274-C06F-B154-8528-57EDDE8C624D}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_3		58396
+	453453582	SFX_Sequence_CookSaltyEgg	.cache\9E\{9E1DF6FB-783F-4283-29DE-305AC17B8145}.wem		\Containers\Default Work Unit\SFX\SFX_Sequence_CookSaltyEgg		3290984
 	478072410	SFX_FEET_Wood_6	.cache\CD\{CD0912ED-7E6E-ACE5-7CF8-1C93CA660088}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_6		53164
 	526873006	AMB_LivingRM	.cache\BB\{BB0550A1-E5A7-FF99-F1D4-25E20B4CF29F}.wem		\Containers\Default Work Unit\Ambience\AMB_LivingRM		9259448
+	548267055	UI_DlgBox_Click_3	.cache\0B\{0B2969A7-5C91-8A74-328C-361C98CBB28E}.wem		\Containers\Default Work Unit\UI\Dlgbox_Click\UI_DlgBox_Click_3		169168
 	554489174	SFX_FEET_Tile_8	.cache\9E\{9E962853-4051-27A3-778A-103DFEA97E5F}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_8		69796
-	639292306	AMB_BedRM	.cache\4F\{4FE7CBC6-0ED7-4933-4C33-BB8F37090E24}.wem		\Containers\Default Work Unit\Ambience\AMB_BedRM		9476228
+	619548947	UI_DlgBox_Open	.cache\0C\{0CCFBDB3-93B8-D038-B9E2-6160A5C3FB11}.wem		\Containers\Default Work Unit\UI\UI_DlgBox_Open		462468
+	621768871	SFX_Sequence_CookBrunch!	.cache\49\{49822D5B-9137-DEA6-8932-C1D807C3A669}.wem		\Containers\Default Work Unit\SFX\SFX_Sequence_CookBrunch!		1236096
+	641684517	SFX_Sequence_CookNothing	.cache\60\{60D9149D-B6D8-872B-9E50-C9AA61601257}.wem		\Containers\Default Work Unit\SFX\SFX_Sequence_CookNothing		694340
 	649690559	SFX_FEET_Wood_2	.cache\57\{57881B86-D983-4256-AFF1-BB20306C397E}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_2		55356
+	662735570	UI_DlgBox_Click_4	.cache\0F\{0F424172-F597-EC4C-30AB-FD806397CDD2}.wem		\Containers\Default Work Unit\UI\Dlgbox_Click\UI_DlgBox_Click_4		169156
 	704693165	SFX_FEET_Carpet_7	.cache\0C\{0CEFB694-9F5A-E0ED-E207-99044D4AB628}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_7		58080
+	716138662	AMB_Dusk	.cache\37\{37A3146E-31AC-D91D-15DB-60D8EBE4196D}.wem		\Containers\Default Work Unit\Ambience\AMB_Dusk		7587128
+	728678415	SFX_DoorBell	.cache\7E\{7E3BFB5B-D0AB-FEAE-1CC0-C82B683B7014}.wem		\Containers\Default Work Unit\SFX\SFX_DoorBell		1756060
 	765750766	SFX_FEET_Tile_1	.cache\1D\{1DE8068B-2DCE-B126-0AC0-7B6BD2EA2C7B}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_1		67864
-	793882098	SFX_FEET_Carpet_1	.cache\56\{56753654-6F99-ED22-92D4-D222B6148862}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_1		76132
+	793882098	SFX_FEET_Carpet_1	.cache\C5\{C5C6E4F1-01D8-10B0-B38D-47CC273FD302}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_1		76132
+	799047109	AMB_BedRMNature	.cache\19\{19BEF926-97B5-4894-B7CD-714CDE857266}.wem		\Containers\Default Work Unit\Ambience\AMB_BedRMNature		5760096
 	801401364	AMB_FridgeHum	.cache\B1\{B1FCD4C3-BD57-C315-4C2F-DD46827A288B}.wem		\Containers\Default Work Unit\Ambience\AMB_FridgeHum		1848096
+	809086454	UI_Shop_Click_3	.cache\D9\{D982A815-75A2-73CF-7B64-05B6A824D633}.wem		\Containers\Default Work Unit\UI\Shop_Click\UI_Shop_Click_3		96096
+	814264461	SFX_DoorOpen	.cache\66\{66FAB942-92BC-A07D-103A-1AF4E5FA13D3}.wem		\Containers\Default Work Unit\SFX\SFX_DoorOpen		194452
 	821940578	AMB_ShamanShop	.cache\9E\{9EC4C5A8-0930-5212-2E40-681C563C0F65}.wem		\Containers\Default Work Unit\Ambience\AMB_ShamanShop		8175580
+	823341126	SFX_AntiqueClock_Alarm	.cache\17\{17BFC66F-FBD6-D262-5D97-60D35C90AF82}.wem		\Containers\Default Work Unit\SFX\SFX_AntiqueClock_Alarm		1920096
+	881145156	SFX_Plate_PutDown	.cache\E9\{E9EA34F3-80D6-E3C9-3844-B8CF61E829D8}.wem		\Containers\Default Work Unit\SFX\SFX_Plate_PutDown		282228
 	891755208	SFX_FEET_Tile_3	.cache\0C\{0CA501BC-F71A-4018-8906-9239E88E5256}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_3		66332
 	895572148	SFX_FEET_Carpet_2	.cache\2B\{2BEF5A6A-3AF3-50DB-5FD1-343ED62F38C5}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_2		67208
+	900210479	MSC_Piano_Practice_5	.cache\EB\{EBD52E18-A789-BE31-CC27-60F57794AC8E}.wem		\Containers\Default Work Unit\Music\MSC_Piano_Practice_5		10176096
 	915244861	SFX_FEET_Carpet_4	.cache\98\{98C07D1C-6356-37CE-FB8F-88353642F025}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_4		54156
 	925946169	SFX_FEET_Carpet_5	.cache\23\{2366BF0B-FB26-AFDF-965E-6A6A6858E72A}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Carpet\SFX_FEET_Carpet_5		68284
 	929964306	AMB_AntiqueClock_Tick	.cache\6F\{6F1ACABD-31B9-9142-7691-CB2BE98185EA}.wem		\Containers\Default Work Unit\Ambience\AMB_AntiqueClock_Tick		1107096
 	979872708	SFX_FEET_Tile_4	.cache\59\{593755A5-B1C7-9C4A-E8BC-384DA6806E55}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Tile\SFX_FEET_Tile_4		53532
+	993241936	UI_Shop_NoBuy	.cache\88\{88343C7F-05FC-8199-6F6C-6C5BF18418CE}.wem		\Containers\Default Work Unit\UI\UI_Shop_NoBuy		216096
+	1002316784	MSC_Piano_Practice_2	.cache\59\{59274998-06A5-2D65-EC0B-5E6334A3CE53}.wem		\Containers\Default Work Unit\Music\MSC_Piano_Practice_2		10872096
+	1009526687	UI_Shop_Click_2	.cache\EC\{EC8D7EE0-B335-76FE-D215-39BCCF5CCBCD}.wem		\Containers\Default Work Unit\UI\Shop_Click\UI_Shop_Click_2		108096
 	1009779821	SFX_FEET_Wood_5	.cache\46\{46C3720F-EBED-9B19-18CD-DF59F95EF164}.wem		\Containers\Default Work Unit\SFX\Footsteps\Footsteps\Wood\SFX_FEET_Wood_5		38924
+	1020926412	MSC_Piano_Practice_6	.cache\13\{13CFD1C1-A0AD-4A98-7DA0-60613D412A75}.wem		\Containers\Default Work Unit\Music\MSC_Piano_Practice_6		10272096
+	1052303738	SFX_DoorClose	.cache\81\{81713502-97CB-441C-D0D7-AE28EEF0A027}.wem		\Containers\Default Work Unit\SFX\SFX_DoorClose		228676
 

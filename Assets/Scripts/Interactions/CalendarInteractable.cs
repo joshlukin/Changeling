@@ -13,6 +13,9 @@ public class CalendarInteractable : Interactable
     [Tooltip("Label shown on the panel. Can be left empty.")]
     public string panelLabel = "Medicine Reminders";
 
+    [Header("Wwise Events")]
+    public AK.Wwise.Event calendarOpenEvent;
+
     private void Start()
     {
         repeatable = false;
@@ -20,6 +23,8 @@ public class CalendarInteractable : Interactable
 
     protected override void OnInteract()
     {
+        calendarOpenEvent?.Post(gameObject);
+
         ScenePanelManager.Instance.OpenPanel(
             calendarArt,
             panelLabel,

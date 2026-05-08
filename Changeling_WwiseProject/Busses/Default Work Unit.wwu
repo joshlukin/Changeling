@@ -9,6 +9,43 @@
 							<ObjectRef Name="System" ID="{821B36FE-602E-4001-BFED-D13C22FF8F77}" WorkUnitID="{1872FA4D-3B15-47AD-8F2A-243AD9622BCD}"/>
 						</Reference>
 					</ReferenceList>
+					<ChildrenList>
+						<Bus Name="Home" ID="{AB4EAEE8-1C7D-43F0-B0C3-1B2836D31480}">
+							<ChildrenList>
+								<Bus Name="Piano" ID="{B10E0213-40AD-4B16-A76B-A6A84AC93809}"/>
+							</ChildrenList>
+							<StateInfo>
+								<StateGroupList>
+									<StateGroupInfo>
+										<StateGroupRef Name="Gameplay_Audio_State" ID="{E6B83C42-8F7C-4D12-8FBB-F2AD547DC50D}"/>
+										<StateGroupInfo Name="" ID="{23FF6C54-5602-49F9-A288-1A2EE46C78F2}" ShortID="46906963"/>
+									</StateGroupInfo>
+								</StateGroupList>
+								<CustomStateList>
+									<CustomState>
+										<StateRef Name="None" ID="{189EBB87-6830-452D-97D2-EEBEC03E3BD5}"/>
+										<CustomState Name="" ID="{F7763F0F-F102-48BD-BB70-499CFC7FFB26}" ShortID="277861072">
+											<PropertyList>
+												<Property Name="BusVolume" Type="Real64" Value="-108"/>
+											</PropertyList>
+										</CustomState>
+									</CustomState>
+									<CustomState>
+										<StateRef Name="ShamanVisit" ID="{021EE590-893F-4599-82AD-39D46B161F4C}"/>
+										<CustomState Name="" ID="{9EF3212D-2376-4BBC-9443-BBCD56FA4393}" ShortID="354527989">
+											<PropertyList>
+												<Property Name="BusVolume" Type="Real64" Value="-108"/>
+											</PropertyList>
+										</CustomState>
+									</CustomState>
+									<CustomState>
+										<StateRef Name="Normal" ID="{08ABC99A-33FE-4C49-9756-BEDC01137498}"/>
+										<CustomState Name="" ID="{F8D29CF9-FBE3-4BAE-A9FE-62903D341718}" ShortID="484076809"/>
+									</CustomState>
+								</CustomStateList>
+							</StateInfo>
+						</Bus>
+					</ChildrenList>
 				</Bus>
 			</ChildrenList>
 		</WorkUnit>

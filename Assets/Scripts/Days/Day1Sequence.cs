@@ -37,6 +37,18 @@ public class Day1Sequence : MonoBehaviour
 
     private const float PollInterval = 0.3f;
 
+    [Header("Wwise Events")]
+    public AK.Wwise.Event bedroomWakeUpEvent;
+    public AK.Wwise.Event bedroomLeaveEvent;
+    [Header("Wwise End Of Day Events")]
+    public AK.Wwise.Event endOfDayPauseEvent;
+    public AK.Wwise.Event stopSfxBeforeDay2Event;
+
+    [Header("Audio Post Targets")]
+    public GameObject audioPostTarget;
+    public GameObject sfxAudioObject;
+        
+
     IEnumerator Start()
     {
         // Wait one frame for all singletons to initialise
@@ -45,41 +57,45 @@ public class Day1Sequence : MonoBehaviour
     }
 
     IEnumerator MorningSequence()
-    {
-        // 1. Start fully black
-        FadeManager.Instance.SnapToBlack();
+{
+    // 1. Start fully black
+    FadeManager.Instance.SnapToBlack();
 
-        // 2. Open the bedroom art panel BEFORE fading in
-        // This means the player never sees the 3D hallway during the intro.
-        // OpenPanel is used (not WithCallback) so the [E] prompt shows —
-        // but we immediately hide it since dialogue controls advancing here.
-        ScenePanelManager.Instance.OpenPanel(
-            bedroomArt,
-            "Bedroom",
-            onClose: null
-        );
+    // 2. Open the bedroom art panel BEFORE fading in
+    // This means the player never sees the 3D hallway during the intro.
+    // OpenPanel is used (not WithCallback) so the [E] prompt shows —
+    // but we immediately hide it since dialogue controls advancing here.
+    ScenePanelManager.Instance.OpenPanel(
+        bedroomArt,
+        "Bedroom",
+        onClose: null
+    );
 
-        // 3. Fade in — player "opens eyes" into the bedroom art
-        yield return FadeManager.Instance.FadeIn(1.5f);
+    bedroomWakeUpEvent?.Post(gameObject);
 
-        // 4. Hide the [E] prompt — dialogue advances lines instead
-        ScenePanelManager.Instance.SetContinuePromptVisible(false);
+    // 3. Fade in — player "opens eyes" into the bedroom art
+    yield return FadeManager.Instance.FadeIn(1.5f);
 
-        // 5. Opening monologue plays over the bedroom art
-        yield return PlayAndWait(DialogueSequence.Create(
-            new DialogueLine("You (to yourself)", "...Another morning."),
-            new DialogueLine("You (to yourself)", "I should check the calendar.")
-        ));
+    // 4. Hide the [E] prompt — dialogue advances lines instead
+    ScenePanelManager.Instance.SetContinuePromptVisible(false);
 
-        // 6. Close bedroom art — player now sees the 3D hallway
-        ScenePanelManager.Instance.ClosePanel();
+    // 5. Opening monologue plays over the bedroom art
+    yield return PlayAndWait(DialogueSequence.Create(
+        new DialogueLine("You (to yourself)", "...Another morning."),
+        new DialogueLine("You (to yourself)", "I should check the calendar.")
+    ));
 
-        // Brief pause before objective appears
-        yield return new WaitForSeconds(0.3f);
+    // 6. Close bedroom art — player now sees the 3D hallway
+    ScenePanelManager.Instance.ClosePanel();
 
-        // 7. Calendar objective
-        ObjectiveManager.Instance.SetObjective("Check the calendar.");
-        yield return WaitForFlag("has_read_calendar");
+    bedroomLeaveEvent?.Post(gameObject);
+
+    // Brief pause before objective appears
+    yield return new WaitForSeconds(0.3f);
+
+    // 7. Calendar objective
+    ObjectiveManager.Instance.SetObjective("Check the calendar.");
+    yield return WaitForFlag("has_read_calendar");
 
         ObjectiveManager.Instance.SetObjective("Find the kitchen and make brunch.");
         yield return WaitForFlag("brunch_made");
@@ -125,23 +141,35 @@ public class Day1Sequence : MonoBehaviour
     }
 
     IEnumerator EndOfDay()
-    {
-        ObjectiveManager.Instance.ClearObjective();
+{
+    ObjectiveManager.Instance.ClearObjective();
 
-        DayManager.Instance.AdvanceDay();
-        
-        yield return FadeManager.Instance.FadeOut(1.5f);
-        
-        if (day2Sequence != null)
-        {
-            gameObject.SetActive(false);
-            day2Sequence.StartDay2();
-        }
-        else
-        {
-            Debug.LogWarning("[Day1Sequence] No Day2Sequence assigned.");
-        } 
+    DayManager.Instance.AdvanceDay();
+
+    if (endOfDayPauseEvent != null)
+    {
+        endOfDayPauseEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
     }
+
+    if (stopSfxBeforeDay2Event != null && sfxAudioObject != null)
+    {
+        stopSfxBeforeDay2Event.Post(sfxAudioObject);
+    }
+    
+    yield return FadeManager.Instance.FadeOut(2.5f);
+
+    yield return new WaitForSeconds(2.0f);
+    
+    if (day2Sequence != null)
+    {
+        gameObject.SetActive(false);
+        day2Sequence.StartDay2();
+    }
+    else
+    {
+        Debug.LogWarning("[Day1Sequence] No Day2Sequence assigned.");
+    } 
+}
 
     // -------------------------------------------------------
     // Helpers

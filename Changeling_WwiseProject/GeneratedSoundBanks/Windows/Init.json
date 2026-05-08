@@ -10,7 +10,7 @@
     "Type": "User",
     "GUID": "{701ECBBD-9C7B-4030-8CDB-749EE5D1C7B9}",
     "Language": "SFX",
-    "Hash": "{FB7A72B1-E19E-80E2-E5EC-803B5EC579EC}",
+    "Hash": "{8A56C587-894F-D8EA-F01B-1EAE560596D8}",
     "ObjectPath": "Init",
     "ShortName": "Init",
     "Path": "Init.bnk",
@@ -36,10 +36,50 @@
     },
     "Busses": [
      {
+      "Id": "1324340420",
+      "Name": "Piano",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\Home\\Piano",
+      "GUID": "{B10E0213-40AD-4B16-A76B-A6A84AC93809}"
+     },
+     {
       "Id": "2246998526",
       "Name": "Main Audio Bus",
       "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus",
       "GUID": "{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}"
+     },
+     {
+      "Id": "3181406844",
+      "Name": "Home",
+      "ObjectPath": "\\Busses\\Default Work Unit\\Main Audio Bus\\Home",
+      "GUID": "{AB4EAEE8-1C7D-43F0-B0C3-1B2836D31480}"
+     }
+    ],
+    "StateGroups": [
+     {
+      "Id": "612083820",
+      "Name": "Gameplay_Audio_State",
+      "ObjectPath": "\\States\\Default Work Unit\\Gameplay_Audio_State",
+      "GUID": "{E6B83C42-8F7C-4D12-8FBB-F2AD547DC50D}",
+      "States": [
+       {
+        "Id": "19887312",
+        "Name": "ShamanVisit",
+        "ObjectPath": "\\States\\Default Work Unit\\Gameplay_Audio_State\\ShamanVisit",
+        "GUID": "{021EE590-893F-4599-82AD-39D46B161F4C}"
+       },
+       {
+        "Id": "748895195",
+        "Name": "None",
+        "ObjectPath": "\\States\\Default Work Unit\\Gameplay_Audio_State\\None",
+        "GUID": "{189EBB87-6830-452D-97D2-EEBEC03E3BD5}"
+       },
+       {
+        "Id": "1160234136",
+        "Name": "Normal",
+        "ObjectPath": "\\States\\Default Work Unit\\Gameplay_Audio_State\\Normal",
+        "GUID": "{08ABC99A-33FE-4C49-9756-BEDC01137498}"
+       }
+      ]
      }
     ],
     "SwitchGroups": [
@@ -72,6 +112,6 @@
     ]
    }
   ],
-  "FileHash": "{83C35095-82E9-0E9D-D5C3-07F2C1EE9F7B}"
+  "FileHash": "{3799C9C8-E9A1-0984-9467-BEA0BB7230E6}"
  }
 }

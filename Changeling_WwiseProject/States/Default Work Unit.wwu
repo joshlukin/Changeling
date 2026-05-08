@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{6F38E1F9-D5C2-479E-9B2A-B090E237E92A}" SchemaVersion="133">
 	<States>
-		<WorkUnit Name="Default Work Unit" ID="{6F38E1F9-D5C2-479E-9B2A-B090E237E92A}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{6F38E1F9-D5C2-479E-9B2A-B090E237E92A}" PersistMode="Standalone">
+			<ChildrenList>
+				<StateGroup Name="Gameplay_Audio_State" ID="{E6B83C42-8F7C-4D12-8FBB-F2AD547DC50D}">
+					<ChildrenList>
+						<State Name="None" ID="{189EBB87-6830-452D-97D2-EEBEC03E3BD5}"/>
+						<State Name="ShamanVisit" ID="{021EE590-893F-4599-82AD-39D46B161F4C}"/>
+						<State Name="Normal" ID="{08ABC99A-33FE-4C49-9756-BEDC01137498}"/>
+					</ChildrenList>
+					<TransitionList>
+						<Transition>
+							<StartState Name="None" ID="{189EBB87-6830-452D-97D2-EEBEC03E3BD5}"/>
+							<EndState Name="ShamanVisit" ID="{021EE590-893F-4599-82AD-39D46B161F4C}"/>
+							<Time>1</Time>
+							<IsShared>false</IsShared>
+						</Transition>
+						<Transition>
+							<StartState Name="Normal" ID="{08ABC99A-33FE-4C49-9756-BEDC01137498}"/>
+							<EndState Name="ShamanVisit" ID="{021EE590-893F-4599-82AD-39D46B161F4C}"/>
+							<Time>1</Time>
+							<IsShared>false</IsShared>
+						</Transition>
+						<Transition>
+							<StartState Name="ShamanVisit" ID="{021EE590-893F-4599-82AD-39D46B161F4C}"/>
+							<EndState Name="Normal" ID="{08ABC99A-33FE-4C49-9756-BEDC01137498}"/>
+							<Time>1</Time>
+							<IsShared>false</IsShared>
+						</Transition>
+					</TransitionList>
+				</StateGroup>
+			</ChildrenList>
+		</WorkUnit>
 	</States>
 </WwiseDocument>

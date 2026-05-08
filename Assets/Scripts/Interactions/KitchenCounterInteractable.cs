@@ -5,6 +5,10 @@ public class KitchenCounterInteractable : Interactable
     [Header("Kitchen")]
     public Sprite kitchenArt;
 
+    [Header("Wwise Events")]
+    public AK.Wwise.Event cookingStartEvent;
+    public AK.Wwise.Event cookingExitEvent;
+
     private void Start()
     {
         repeatable = false;
@@ -22,6 +26,8 @@ public class KitchenCounterInteractable : Interactable
             "Kitchen",
             onClose: () =>
             {
+                cookingExitEvent?.Post(gameObject);
+
                 DayManager.Instance.SetFlag("brunch_made");
                 DayManager.Instance.SetFlag("kitchen_objective_complete");
             },
@@ -30,7 +36,11 @@ public class KitchenCounterInteractable : Interactable
                 DialogueManager.Instance.PlayDialogue(
                     DialogueSequence.Create(
                         new DialogueLine("", "I should make something to eat.")
-                    )
+                    ),
+                    onComplete: () =>
+                    {
+                        cookingStartEvent?.Post(gameObject);
+                    }
                 );
             }
         );

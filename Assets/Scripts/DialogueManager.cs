@@ -14,6 +14,16 @@ public class DialogueManager : MonoBehaviour
     [Header("Settings")]
     public KeyCode advanceKey = KeyCode.E;
 
+    [Header("Wwise UI Events")]
+    [Tooltip("Played when a new dialogue box / new line appears.")]
+    public AK.Wwise.Event dialogueBoxPopEvent;
+
+    [Tooltip("Played when the player presses E to advance dialogue.")]
+    public AK.Wwise.Event dialogueAdvanceEvent;
+
+    [Header("Audio Post Target")]
+    public GameObject audioPostTarget;
+
     private Queue<DialogueLine> _lineQueue = new Queue<DialogueLine>();
     private System.Action _onComplete;
     private bool _isPlaying = false;
@@ -42,7 +52,14 @@ public class DialogueManager : MonoBehaviour
     void Update()
     {
         if (_awaitingInput && Input.GetKeyDown(advanceKey))
+        {
+            if (dialogueAdvanceEvent != null)
+            {
+                dialogueAdvanceEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+            }
+
             AdvanceLine();
+        }
     }
 
     // -------------------------------------------------------
@@ -110,6 +127,11 @@ public class DialogueManager : MonoBehaviour
 
         if (dialogueText != null)
             dialogueText.text = line.text;
+
+        if (dialogueBoxPopEvent != null)
+        {
+            dialogueBoxPopEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);
+        }
 
         _awaitingInput = true;
     }

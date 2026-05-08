@@ -4,6 +4,11 @@ public class SioRoomInteractable : Interactable
 {
     public Sprite art;
     public DayManager DayManagerInstance;
+
+    [Header("Wwise Events")]
+    public AK.Wwise.Event doorOpenEvent;
+    public AK.Wwise.Event doorCloseEvent;
+
     private void Start()
     {
         repeatable = false;
@@ -17,10 +22,16 @@ public class SioRoomInteractable : Interactable
 
     protected override void OnInteract()
     {
+        doorOpenEvent?.Post(gameObject);
+
         ScenePanelManager.Instance.OpenPanelWithCallback(
             art,
             "Sio room",
-            onClose: ()=> DayManager.Instance.SetFlag("daughter_room_finished"),
+            onClose: ()=> 
+            {
+                doorCloseEvent?.Post(gameObject);
+                DayManager.Instance.SetFlag("daughter_room_finished");
+            },
             onPanelReady: () =>
             {
                 DayManager.Instance.SetFlag("daughter_room_entered");
