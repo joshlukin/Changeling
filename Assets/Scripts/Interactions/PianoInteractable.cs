@@ -65,9 +65,12 @@ public class PianoInteractable : Interactable
         _interactCount++;
 
         bool shamanVisitedToday = DayManager.Instance.GetFlag("shaman_visited_today");
+        int day = DayManager.Instance.currentDay;
 
-        // Set morning or evening flag for Day1Sequence / Day2Sequence to unblock
-        if (!shamanVisitedToday)
+        // Days 3, 5, 6 have no shaman visit — piano always counts as evening
+        bool isEveningDay = day == 3 || day == 5 || day == 6;
+
+        if (!shamanVisitedToday && !isEveningDay)
         {
             DayManager.Instance.SetFlag("piano_visited_morning");
         }
@@ -75,8 +78,9 @@ public class PianoInteractable : Interactable
         {
             DayManager.Instance.SetFlag("piano_visited_evening");
 
-            // Evening visit grants relationship bonus
-            DayManager.Instance.AddRelationship(10);
+            // Only grant relationship on days with a real evening interaction
+            if (shamanVisitedToday)
+                DayManager.Instance.AddRelationship(10);
         }
 
         DialogueLine[] lines = GetDialogueLines();
@@ -97,21 +101,20 @@ public class PianoInteractable : Interactable
 
     private DialogueLine[] GetDialogueLines()
     {
-        bool shamanVisitedToday = DayManager.Instance.GetFlag("shaman_visited_today");
         int day = DayManager.Instance.currentDay;
+        bool shamanVisitedToday = DayManager.Instance.GetFlag("shaman_visited_today");
+
+        // Day-specific evening lines take priority
+        if (day == 5) return _day5EveningLines;
 
         if (shamanVisitedToday)
-            return day >= 2 && day !=5 ? _day2EveningLines : _day1EveningLines;
+            return day >= 2 ? _day2EveningLines : _day1EveningLines;
 
-        if (_interactCount >= 4 && day!=5)
-            return _stareLines;
+        if (_interactCount >= 4) return _stareLines;
 
-        if (DayManager.Instance.GetFlag("kitchen_objective_complete") && !isHomeworkPlaced && day!=5)
+        if (DayManager.Instance.GetFlag("kitchen_objective_complete") && !isHomeworkPlaced)
             return _homeworkLines;
-        
-        if(day == 5)
-            return _day5EveningLines;
-        
+
         return _normalLines;
     }
 

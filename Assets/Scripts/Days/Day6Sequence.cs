@@ -37,8 +37,9 @@ public class Day6Sequence : MonoBehaviour
 
     IEnumerator EndOfDay()
     {
-        // Wait for evening piano visit
-        yield return WaitForFlag("piano_visited_evening");
+        FadeManager.Instance.SnapToBlack();
+
+        yield return FadeManager.Instance.FadeIn(1.5f);
 
         // Unlock dinner
         if (dinnerCounter != null) dinnerCounter.gameObject.SetActive(true);

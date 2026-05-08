@@ -59,7 +59,6 @@ public class Day5Sequence : MonoBehaviour
         ObjectiveManager.Instance.SetObjective("See what Siofra wants to talk about.");
     
         yield return WaitForFlag("piano_visited_evening");
-        
 
         ObjectiveManager.Instance.SetObjective("Wait for Siofra to leave.");
         
