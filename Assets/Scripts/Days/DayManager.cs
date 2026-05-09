@@ -63,6 +63,10 @@ public class DayManager : MonoBehaviour
         Debug.Log($"[DayManager] Relationship: {relationshipStat}");
     }
 
+    public static int GetCurrentDay(DayManager instance)
+    {
+        return instance.currentDay;
+    }
     public void SetDaughterHealth(float value)
     {
         daughterHealth = Mathf.Clamp(value, 0f, 100f);
@@ -80,7 +84,6 @@ public class DayManager : MonoBehaviour
         if (daughterHealth <= 0)
         {
             Debug.LogWarning("[DayManager] Health reached 0!");
-            // TODO: You can broadcast an event here or set a flag if she dies
             SetFlag("daughter_died", true);
         }
     }

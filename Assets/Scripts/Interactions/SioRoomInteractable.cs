@@ -30,7 +30,7 @@ public class SioRoomInteractable : Interactable
             onClose: ()=> 
             {
                 doorCloseEvent?.Post(gameObject);
-                DayManager.Instance.SetFlag("daughter_room_finished");
+                DayManager.Instance.SetFlag("daughter_room_finished", true);
             },
             onPanelReady: () =>
             {
