@@ -416,7 +416,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScenePanelManager
   panelRoot: {fileID: 174804101}
   artImage: {fileID: 1214036778}
-  sceneLabelText: {fileID: 1636902615}
   continuePromptText: {fileID: 1812231847}
   fadeDuration: 0.4
   playerController: {fileID: 1772953859}
@@ -639,7 +638,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b778d7815a0e9d4698d9c3a2aff0e96, type: 2}
+  - {fileID: 2100000, guid: 123344201958a41d0ab9c621602f9d90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -928,7 +927,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b778d7815a0e9d4698d9c3a2aff0e96, type: 2}
+  - {fileID: 2100000, guid: 123344201958a41d0ab9c621602f9d90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1478,6 +1477,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1156487453}
+  - {fileID: 1518835105}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1744,13 +1744,13 @@ MonoBehaviour:
   interactRadius: 2
   interactLabel: Interact
   repeatable: 0
-  indicatorObject: {fileID: 160328117}
+  indicatorObject: {fileID: 1052322121}
   indicatorHeight: 1.5
   floatSpeed: 1.5
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
-  calendarArt: {fileID: 0}
+  calendarArt: {fileID: 21300000, guid: f10ec48f6642b45e085e6e9fc143c6c6, type: 3}
   panelLabel: Medicine Reminders
   calendarOpenEvent:
     idInternal: 0
@@ -1998,6 +1998,7 @@ MonoBehaviour:
   bedroomArt: {fileID: 21300000, guid: 098847f24abbf4793bd8519585e0e279, type: 3}
   killArt: {fileID: 0}
   killChoicePanel: {fileID: 945783163}
+  playerSpawnPoint: {fileID: 1292589586}
   day7Sequence: {fileID: 1696845242}
   startOfDayResumeEvent:
     idInternal: 0
@@ -2242,6 +2243,7 @@ MonoBehaviour:
   shamanObj: {fileID: 1794266533}
   day3Sequence: {fileID: 1504146880}
   bedroomArt: {fileID: 21300000, guid: 098847f24abbf4793bd8519585e0e279, type: 3}
+  playerSpawnPoint: {fileID: 1292589586}
   startOfDayResumeEvent:
     idInternal: 0
     valueGuidInternal: 
@@ -2411,7 +2413,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b778d7815a0e9d4698d9c3a2aff0e96, type: 2}
+  - {fileID: 2100000, guid: 123344201958a41d0ab9c621602f9d90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2524,7 +2526,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a0d6bd2f4c4144c189bffda21e0b7110, type: 2}
+  - {fileID: 2100000, guid: 123344201958a41d0ab9c621602f9d90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3366,7 +3368,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b778d7815a0e9d4698d9c3a2aff0e96, type: 2}
+  - {fileID: 2100000, guid: 123344201958a41d0ab9c621602f9d90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3753,7 +3755,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b778d7815a0e9d4698d9c3a2aff0e96, type: 2}
+  - {fileID: 2100000, guid: 123344201958a41d0ab9c621602f9d90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3848,6 +3850,7 @@ MonoBehaviour:
   dinnerTable: {fileID: 433069207}
   bedroomArt: {fileID: 21300000, guid: 098847f24abbf4793bd8519585e0e279, type: 3}
   day5Sequence: {fileID: 984907873}
+  playerSpawnPoint: {fileID: 1292589586}
   startOfDayResumeEvent:
     idInternal: 0
     valueGuidInternal: 
@@ -4094,6 +4097,7 @@ MonoBehaviour:
   currentDay: 1
   relationshipStat: 0
   daughterHealth: 90
+  daughterHealthText: {fileID: 1518835106}
   mostRecentFlag: 
 --- !u!4 &852367976
 Transform:
@@ -4464,6 +4468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Day5Sequence
   kitchenArt: {fileID: 21300000, guid: e5ce05e2acd4444e1a2ff347ea43f439, type: 3}
   day6Sequence: {fileID: 197619662}
+  playerSpawnPoint: {fileID: 1292589586}
   startOfDayResumeEvent:
     idInternal: 0
     valueGuidInternal: 
@@ -4677,7 +4682,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.70710677, z: -0, w: 0.7071069}
   m_LocalPosition: {x: 0.785, y: 0.617, z: 0.021000696}
-  m_LocalScale: {x: 0.30173, y: 0.30173, z: 0.30173}
+  m_LocalScale: {x: 0.8644565, y: 0.8644565, z: 0.8644565}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 160328122}
@@ -4729,7 +4734,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b778d7815a0e9d4698d9c3a2aff0e96, type: 2}
+  - {fileID: 2100000, guid: 123344201958a41d0ab9c621602f9d90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5458,6 +5463,37 @@ RectTransform:
   m_AnchoredPosition: {x: -334, y: 630}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1292589585
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1292589586}
+  m_Layer: 0
+  m_Name: Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1292589586
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292589585}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 12.287883, y: 0.63934183, z: 2.5754347}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1380724218
 GameObject:
   m_ObjectHideFlags: 0
@@ -5539,7 +5575,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b778d7815a0e9d4698d9c3a2aff0e96, type: 2}
+  - {fileID: 2100000, guid: 123344201958a41d0ab9c621602f9d90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5843,6 +5879,7 @@ MonoBehaviour:
   dinnerTable: {fileID: 433069207}
   bedroomArt: {fileID: 21300000, guid: 098847f24abbf4793bd8519585e0e279, type: 3}
   day4Sequence: {fileID: 762572958}
+  playerSpawnPoint: {fileID: 1292589586}
   dayStartFirstDialogueEvent:
     idInternal: 0
     valueGuidInternal: 
@@ -5861,6 +5898,143 @@ MonoBehaviour:
     WwiseObjectReference: {fileID: 0}
   audioPostTarget: {fileID: 0}
   sfxToStopAudioObject: {fileID: 0}
+--- !u!1 &1518835104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1518835105}
+  - component: {fileID: 1518835107}
+  - component: {fileID: 1518835106}
+  m_Layer: 5
+  m_Name: Health
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1518835105
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518835104}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 126900815}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 900, y: -635}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1518835106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518835104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Health: X'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: -79.80737, y: 0, z: 0, w: -28.27472}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1518835107
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518835104}
+  m_CullTransparentMesh: 1
 --- !u!1 &1553669189
 GameObject:
   m_ObjectHideFlags: 0
@@ -6041,7 +6215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1636902613
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6479,8 +6653,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32fa98dc735d847559dd50bd0c5a83d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Day7Sequence
-  killCutsceneSprites: []
-  letGoCutsceneSprites: []
+  killCutsceneSprites:
+  - {fileID: 21300000, guid: 7e2c2aab519dc4d47944366668e4ab9f, type: 3}
+  - {fileID: 21300000, guid: ea6b5e62ad45b460185e9a8e98ed46db, type: 3}
+  - {fileID: 21300000, guid: c865cfc3130e745a98b456327b68115d, type: 3}
+  - {fileID: 21300000, guid: 1089d3117423f4095a7142c60f8e17f6, type: 3}
+  - {fileID: 21300000, guid: 35216dae31dee48faab90ce4f939924a, type: 3}
+  - {fileID: 21300000, guid: 4121330cbc0a44b4a9957de37ea7c66b, type: 3}
+  - {fileID: 21300000, guid: d3912fe52147c40aeb71a35b42002d51, type: 3}
+  - {fileID: 21300000, guid: c32d0fd03d67b49f29ea23d8d1cc4c49, type: 3}
+  - {fileID: 21300000, guid: 3a818fddfe16847cd8b7383d7d5bac77, type: 3}
+  - {fileID: 21300000, guid: 82a1b6b9b4ce24261b7b0d6e44c3614d, type: 3}
+  letGoCutsceneSprites:
+  - {fileID: 21300000, guid: 7e2c2aab519dc4d47944366668e4ab9f, type: 3}
+  - {fileID: 21300000, guid: ea6b5e62ad45b460185e9a8e98ed46db, type: 3}
+  - {fileID: 21300000, guid: c865cfc3130e745a98b456327b68115d, type: 3}
+  - {fileID: 21300000, guid: 1089d3117423f4095a7142c60f8e17f6, type: 3}
+  - {fileID: 21300000, guid: 35216dae31dee48faab90ce4f939924a, type: 3}
+  - {fileID: 21300000, guid: 4121330cbc0a44b4a9957de37ea7c66b, type: 3}
+  - {fileID: 21300000, guid: d3912fe52147c40aeb71a35b42002d51, type: 3}
+  - {fileID: 21300000, guid: f55a470a480e94beb90ee68ff30fdcca, type: 3}
+  - {fileID: 21300000, guid: 02dd44018b9f04ebdbdadba3e3bdffa9, type: 3}
+  - {fileID: 21300000, guid: 2210acc7ff02d41dd9f145ae0a811f72, type: 3}
+  - {fileID: 21300000, guid: 148e2bab7da53460b84ef3d141db2fa1, type: 3}
+  - {fileID: 21300000, guid: da737cf6967504eafb8efaa2278f8c12, type: 3}
+  - {fileID: 21300000, guid: 76aa22ec650f9483496f81dbe5966688, type: 3}
+  - {fileID: 21300000, guid: 45fc80068887c41f4ae5537600963616, type: 3}
+  - {fileID: 21300000, guid: cd54d1907f9f9400a91205f0bfa447b0, type: 3}
   killEndingMusic:
     idInternal: 0
     valueGuidInternal: 
@@ -6717,7 +6916,7 @@ MonoBehaviour:
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
-  art: {fileID: 0}
+  art: {fileID: 21300000, guid: 12213b121a34f44efa4ad23974e81a72, type: 3}
   DayManagerInstance: {fileID: 852367975}
   windowLookStartEvent:
     idInternal: 0
@@ -7758,7 +7957,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9b778d7815a0e9d4698d9c3a2aff0e96, type: 2}
+  - {fileID: 2100000, guid: 123344201958a41d0ab9c621602f9d90, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8298,7 +8497,7 @@ MonoBehaviour:
   floatAmount: 0.1
   pulseSpeed: 2
   pulseAmount: 0.08
-  shamanArt: {fileID: 0}
+  shamanArt: {fileID: 21300000, guid: 10609e00f689342f8b02f15967586384, type: 3}
   shamanInventory: {fileID: 1794266535}
   playerInventory: {fileID: 1772953854}
   shamanArtStartEvent:
@@ -8371,3 +8570,4 @@ SceneRoots:
   - {fileID: 1958040765}
   - {fileID: 945783164}
   - {fileID: 1428468183}
+  - {fileID: 1292589586}

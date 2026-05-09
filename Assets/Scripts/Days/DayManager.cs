@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 //NOTE: 
 //Using DayManager for future days: every new day gets its own sequence script — Day2Sequence, Day3Sequence etc.
@@ -22,6 +23,7 @@ public class DayManager : MonoBehaviour
     [Header("Stats")]
     public int relationshipStat = 0;
     public float daughterHealth = 90f; // Starting health
+    public TextMeshProUGUI daughterHealthText;
 
     private Dictionary<string, bool> _flags = new Dictionary<string, bool>();
 
@@ -37,6 +39,7 @@ public class DayManager : MonoBehaviour
         }
 
         Instance = this;
+        daughterHealthText.text = "Siofra's Health: " + daughterHealth;
         DontDestroyOnLoad(gameObject);
     }
 
@@ -86,5 +89,7 @@ public class DayManager : MonoBehaviour
             Debug.LogWarning("[DayManager] Health reached 0!");
             SetFlag("daughter_died", true);
         }
+        
+        daughterHealthText.text = "Siofra's Health: " + daughterHealth;
     }
 }

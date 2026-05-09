@@ -19,6 +19,7 @@ public class CalendarInteractable : Interactable
     private void Start()
     {
         repeatable = false;
+        this.gameObject.SetActive(true);
     }
 
     protected override void OnInteract()

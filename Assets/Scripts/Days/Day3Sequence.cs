@@ -24,6 +24,8 @@ public class Day3Sequence : MonoBehaviour
     private const float PollInterval = 0.3f;
     public Sprite bedroomArt;
     public Day4Sequence day4Sequence;
+    [Header("Spawning")]
+    public Transform playerSpawnPoint;
 
     [Header("Wwise Events")]
     [Tooltip("Plays at the very start of Day 3 when the first dialogue box appears.")]
@@ -78,7 +80,10 @@ public class Day3Sequence : MonoBehaviour
     {
         // 1. Fade in
         FadeManager.Instance.SnapToBlack();
-
+        if (playerSpawnPoint != null)
+        {
+            ScenePanelManager.Instance.TeleportPlayer(playerSpawnPoint);
+        }
         // 2. Open the bedroom art panel BEFORE fading in
         // This means the player never sees the 3D hallway during the intro.
         // OpenPanel is used (not WithCallback) so the [E] prompt shows —

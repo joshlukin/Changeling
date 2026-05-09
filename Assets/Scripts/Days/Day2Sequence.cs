@@ -30,6 +30,8 @@ public class Day2Sequence : MonoBehaviour
     public Day3Sequence day3Sequence;
     private const float PollInterval = 0.3f;
     public Sprite bedroomArt;
+    [Header("Spawning")]
+    public Transform playerSpawnPoint;
 
     [Header("Wwise Start Of Day Events")]
     public AK.Wwise.Event startOfDayResumeEvent;
@@ -92,7 +94,10 @@ public class Day2Sequence : MonoBehaviour
     IEnumerator MorningSequence()
     {
         FadeManager.Instance.SnapToBlack();
-
+        if (playerSpawnPoint != null)
+        {
+            ScenePanelManager.Instance.TeleportPlayer(playerSpawnPoint);
+        }
         if (startOfDayResumeEvent != null)
         {
             startOfDayResumeEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);

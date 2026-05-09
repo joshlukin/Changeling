@@ -16,7 +16,7 @@ public class DinnerTableInteractable : Interactable
     [Header("Day Data")]
     [Tooltip("One entry per day. Index 0 = Day 1, Index 1 = Day 2, etc.")]
     public DinnerTableDayData[] dayData;
-
+    
     [Header("Wwise Events")]
     public AK.Wwise.Event platePutDownEvent;
 

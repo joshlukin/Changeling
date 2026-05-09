@@ -20,6 +20,8 @@ public class Day5Sequence : MonoBehaviour
     public Day6Sequence day6Sequence;
 
     private const float PollInterval = 0.3f;
+    [Header("Spawning")]
+    public Transform playerSpawnPoint;
 
     [Header("Wwise Start Of Day Events")]
     [Tooltip("Re-engages / resumes audio after the Day 4 to Day 5 transition.")]
@@ -69,7 +71,10 @@ public class Day5Sequence : MonoBehaviour
     IEnumerator Day5Opening()
     {
         FadeManager.Instance.SnapToBlack();
-
+        if (playerSpawnPoint != null)
+        {
+            ScenePanelManager.Instance.TeleportPlayer(playerSpawnPoint);
+        }
         if (startOfDayResumeEvent != null)
         {
             startOfDayResumeEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);

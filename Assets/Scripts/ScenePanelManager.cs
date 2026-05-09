@@ -10,7 +10,7 @@ public class ScenePanelManager : MonoBehaviour
     [Header("UI References")]
     public GameObject panelRoot;
     public Image artImage;
-    public TextMeshProUGUI sceneLabelText;
+    //public TextMeshProUGUI sceneLabelText;
     public TextMeshProUGUI continuePromptText;
 
     [Header("Transition")]
@@ -39,6 +39,7 @@ public class ScenePanelManager : MonoBehaviour
 
         if (panelRoot != null)
             panelRoot.SetActive(false);
+        
     }
 
     // -------------------------------------------------------
@@ -125,12 +126,6 @@ public class ScenePanelManager : MonoBehaviour
                 artImage.color = new Color(0.1f, 0.08f, 0.12f);
             }
         }
-
-        if (sceneLabelText != null)
-        {
-            sceneLabelText.text = label;
-            sceneLabelText.gameObject.SetActive(!string.IsNullOrEmpty(label));
-        }
     }
     
 
@@ -190,7 +185,24 @@ public class ScenePanelManager : MonoBehaviour
         _onClose?.Invoke();
         _onClose = null;
     }
-
+    public void TeleportPlayer(Transform spawnPoint)
+    {
+        if (playerController != null && spawnPoint != null)
+        {
+            // 1. Disable the controller so physics doesn't fight us
+            playerController.enabled = false;
+            
+            // 2. Move and rotate the player to match the spawn point
+            playerController.transform.position = spawnPoint.position;
+            playerController.transform.rotation = spawnPoint.rotation;
+            
+            // 3. Force Unity to register the new position immediately
+            Physics.SyncTransforms();
+            
+            // 4. Turn the controller back on
+            playerController.enabled = true;
+        }
+    }
 
     public void LockPlayer(bool locked)
     {

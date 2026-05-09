@@ -15,7 +15,8 @@ public class Day6Sequence : MonoBehaviour
     public Sprite killArt;
     [Header("Kill Choice")]
     public KillChoicePanel killChoicePanel;
-    
+    [Header("Spawning")]
+    public Transform playerSpawnPoint;
     public Day7Sequence day7Sequence;
     
     
@@ -68,7 +69,10 @@ public class Day6Sequence : MonoBehaviour
     IEnumerator EndOfDay()
     {
         FadeManager.Instance.SnapToBlack();
-
+        if (playerSpawnPoint != null)
+        {
+            ScenePanelManager.Instance.TeleportPlayer(playerSpawnPoint);
+        }
         if (startOfDayResumeEvent != null)
         {
             startOfDayResumeEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);

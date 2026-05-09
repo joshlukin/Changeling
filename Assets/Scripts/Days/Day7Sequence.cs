@@ -83,26 +83,32 @@ public class Day7Sequence : MonoBehaviour
             yield break;
         }
 
-        // Lock player movement/interactions during the sequence
+        // Lock player movement and prevent manual skipping
         ScenePanelManager.Instance.LockPlayer(true);
+        ScenePanelManager.Instance.SetCanCloseWithKey(false);
 
         foreach (Sprite frame in frames)
         {
-            bool frameDone = false;
-
+            // Open the panel with no onClose callback needed
             ScenePanelManager.Instance.OpenPanel(
                 frame,
                 "Ending Sequence",
-                onClose: () => { frameDone = true; }
+                onClose: null
             );
 
-            // Wait for the player to hit the close key before moving to the next image
-            yield return new WaitUntil(() => frameDone);
+            // Wait exactly 3 seconds per frame (so 2 frames = 6 seconds)
+            yield return new WaitForSeconds(3.0f);
             
-            // A tiny delay feels more natural than instantly snapping to the next panel
-            yield return new WaitForSeconds(0.15f);
+            // Programmatically close the panel so the next one can open
+            ScenePanelManager.Instance.ClosePanel();
+
+            // Wait 0.5 seconds to let the ScenePanelManager's fade-out animation finish
+            // (Assuming your fadeDuration is around 0.4 seconds)
+            yield return new WaitForSeconds(0.5f);
         }
 
+        // Restore control
+        ScenePanelManager.Instance.SetCanCloseWithKey(true);
         ScenePanelManager.Instance.LockPlayer(false);
     }
 }
