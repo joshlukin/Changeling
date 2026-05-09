@@ -143,7 +143,6 @@ public class Day1Sequence : MonoBehaviour
     IEnumerator EndOfDay()
 {
     ObjectiveManager.Instance.ClearObjective();
-
     DayManager.Instance.AdvanceDay();
 
     if (endOfDayPauseEvent != null)

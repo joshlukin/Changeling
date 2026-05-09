@@ -109,6 +109,7 @@ public class Day5Sequence : MonoBehaviour
             new DialogueLine("You", "I will save you, don’t worry."),
             new DialogueLine("You", "I will definitely save you.")
         ));
+        Debug.Log("dialogue done");
 
         yield return StartCoroutine(EndOfDay());
     }
@@ -120,7 +121,7 @@ public class Day5Sequence : MonoBehaviour
     IEnumerator EndOfDay()
     {
         ObjectiveManager.Instance.ClearObjective();
-
+        DayManager.Instance.ModifyDaughterHealth(-9f);
         if (endOfDayPauseEvent != null)
         {
             endOfDayPauseEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);

@@ -11,7 +11,14 @@ public class Day6Sequence : MonoBehaviour
     
     private const float PollInterval = 0.3f;
     public Sprite bedroomArt;
-    //public Day7Sequence day7Sequence;
+
+    public Sprite killArt;
+    [Header("Kill Choice")]
+    public KillChoicePanel killChoicePanel;
+    
+    public Day7Sequence day7Sequence;
+    
+    
 
     [Header("Wwise Start Of Day Events")]
     [Tooltip("Re-engages / resumes audio after the Day 5 to Day 6 transition.")]
@@ -37,6 +44,7 @@ public class Day6Sequence : MonoBehaviour
     [Header("Audio Post Target")]
     public GameObject audioPostTarget;
 
+    
     public void StartDay6()
     {
         // Reset day-specific flags while preserving cross-day state
@@ -95,6 +103,8 @@ public class Day6Sequence : MonoBehaviour
         ObjectiveManager.Instance.SetObjective("Call Siofra for dinner.");
         yield return WaitForFlag("dinner_placed_day6");
         
+        yield return StartCoroutine(KillingMoment());
+    
         ObjectiveManager.Instance.ClearObjective();
 
         if (endOfDayPauseEvent != null)
@@ -106,26 +116,49 @@ public class Day6Sequence : MonoBehaviour
         {
             stopSfxBeforeNextDayEvent.Post(sfxToStopAudioObject);
         }
-
+        DayManager.Instance.ModifyDaughterHealth(-9f);
         yield return FadeManager.Instance.FadeOut(2.5f);
-
+        
         // Stay black briefly so the pause/stop has time to be felt
         yield return new WaitForSeconds(2.0f);
 
         DayManager.Instance.AdvanceDay();
 
-        // if (day7Sequence != null)
-        // {
-        //     Debug.Log("[Day6Sequence] Day 6 complete.");
-        //     gameObject.SetActive(false);
-        //     day7Sequence.StartDay7();
-        // }
-        // else
-        // {
-        //     Debug.LogWarning("[Day6Sequence] No Day7Sequence assigned.");
-        // } 
+        if (day7Sequence != null)
+        {
+            Debug.Log("[Day6Sequence] Day 6 complete.");
+            gameObject.SetActive(false);
+            day7Sequence.StartDay7();
+        }
+        else
+        {
+            Debug.LogWarning("[Day6Sequence] No Day7Sequence assigned.");
+        } 
+    }
+    private bool _killChoiceMade = false;
+    private IEnumerator KillingMoment()
+    {
+        _killChoiceMade = false;
+        yield return new WaitForSeconds(0.5f);
+
+        killChoicePanel.Show();
+
+        // The coroutine will freeze here until a button is clicked
+        yield return new WaitUntil(() => _killChoiceMade);
+    }
+    public void OnKillChosen()
+    {
+        Debug.Log("[Day6] Kill chosen");
+        _killChoiceMade = true;
+        DayManager.Instance.SetFlag("chose_kill");
     }
 
+    public void OnLetGoChosen()
+    {
+        Debug.Log("[Day6] Let Go chosen");
+        _killChoiceMade = true;
+    }
+    
     // -------------------------------------------------------
     // Helpers
     // -------------------------------------------------------
@@ -133,7 +166,6 @@ public class Day6Sequence : MonoBehaviour
     private IEnumerator PlayAndWait(DialogueSequence sequence)
     {
         bool done = false;
-        DialogueManager.Instance.PlayDialogue(sequence, onComplete: () => done = true);
         yield return new WaitUntil(() => done);
     }
 

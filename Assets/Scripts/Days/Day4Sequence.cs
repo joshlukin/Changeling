@@ -226,7 +226,7 @@ public class Day4Sequence : MonoBehaviour
     IEnumerator EndOfDay()
     {
         ObjectiveManager.Instance.ClearObjective();
-
+        DayManager.Instance.ModifyDaughterHealth(-9f);
         if (endOfDayPauseEvent != null)
         {
             endOfDayPauseEvent.Post(audioPostTarget != null ? audioPostTarget : gameObject);

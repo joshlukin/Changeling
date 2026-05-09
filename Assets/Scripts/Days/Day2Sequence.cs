@@ -202,7 +202,7 @@ public class Day2Sequence : MonoBehaviour
         // Health dropped — player alarmed
         // DayManager.daughterHealth should be set to 81 by remedy logic or
         // automatically decremented here if no remedy was used effectively
-        DayManager.Instance.SetDaughterHealth(81f);
+        DayManager.Instance.ModifyDaughterHealth(-9f);
 
         yield return PlayAndWait(DialogueSequence.Create(
             new DialogueLine("You (to yourself)", "81%..."),
@@ -228,10 +228,10 @@ public class Day2Sequence : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[Day1Sequence] No Day3Sequence assigned.");
+            Debug.LogWarning("[Day2Sequence] No Day3Sequence assigned.");
         } 
 
-        Debug.Log("[Day3Sequence] Day 3 complete.");
+        Debug.Log("[Day2Sequence] Day 2 complete.");
     }
 
     // -------------------------------------------------------

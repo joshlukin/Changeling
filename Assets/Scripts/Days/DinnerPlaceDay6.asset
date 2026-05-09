@@ -16,12 +16,14 @@ MonoBehaviour:
   - speakerName: You
     text: Time for dinner!
   - speakerName: Siofra
-    text: I'm here...
+    text: ...I'm here
   - speakerName: Siofra
     text: Steamed eggs!?
   - speakerName: Siofra
     text: Thank you! Thanks Mom!
   - speakerName: Siofra
-    text: '*Starts Eating*  Blehhhh, how much salt did you add?! These eggs are inedible!'
+    text: '*coughing and spitting out food* '
+  - speakerName: Siofra
+    text: Bleghhh, how much salt did you add!? these eggs are practically inedible!
   - speakerName: You
     text: ...

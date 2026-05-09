@@ -65,6 +65,11 @@ public class DinnerTableInteractable : Interactable
                             DayManager.Instance.SetFlag(data.dinnerPlacedFlag);
                         });
                 }
+                else
+                {
+                    Debug.LogWarning($"[DinnerTable] Missing dialogue for Day {GetDayIndex() + 1}! Bypassing to prevent softlock.");
+                    DayManager.Instance.SetFlag(data.dinnerPlacedFlag);
+                }
             }
         );
     }

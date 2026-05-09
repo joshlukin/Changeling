@@ -80,6 +80,8 @@ public class PianoInteractable : Interactable
 
         bool shamanVisitedToday = DayManager.Instance.GetFlag("shaman_visited_today");
         int day = DayManager.Instance.currentDay;
+        // We delay setting the evening flag until dialogue closes
+        bool shouldSetEveningFlagAfterDialogue = false;
 
         // Days 3, 5, 6 have no shaman visit — piano always counts as evening
         bool isEveningDay = day == 3 || day == 5 || day == 6;
@@ -90,11 +92,7 @@ public class PianoInteractable : Interactable
         }
         else
         {
-            DayManager.Instance.SetFlag("piano_visited_evening");
-
-            // Only grant relationship on days with a real evening interaction
-            if (shamanVisitedToday)
-                DayManager.Instance.AddRelationship(10);
+            shouldSetEveningFlagAfterDialogue = true;
         }
 
         DialogueLine[] lines = GetDialogueLines();
@@ -108,10 +106,22 @@ public class PianoInteractable : Interactable
                 {
                     pianoResumeEvent.Post(pianoAudioObject);
                 }
+
+                // IMPORTANT:
+                // Only signal evening completion AFTER dialogue/panel closes
+                if (shouldSetEveningFlagAfterDialogue)
+                {
+                    DayManager.Instance.SetFlag("piano_visited_evening");
+
+                    // Only grant relationship on days with a real evening interaction
+                    if (shamanVisitedToday)
+                        DayManager.Instance.AddRelationship(10);
+                }
             },
             onPanelReady: () =>
             {
                 UpdateHomeworkPromptVisibility();
+
                 DialogueManager.Instance.PlayDialogue(
                     DialogueSequence.Create(lines)
                 );
@@ -121,11 +131,15 @@ public class PianoInteractable : Interactable
 
     private DialogueLine[] GetDialogueLines()
     {
+        
         int day = DayManager.Instance.currentDay;
         bool shamanVisitedToday = DayManager.Instance.GetFlag("shaman_visited_today");
 
-        // Day-specific evening lines take priority
-        if (day == 5) return _day5EveningLines;
+        if (day == 5 && !DayManager.Instance.GetFlag("day5_piano_complete"))
+        {
+            DayManager.Instance.SetFlag("day5_piano_complete");
+            return _day5EveningLines;
+        }
 
         if (shamanVisitedToday)
             return day >= 2 ? _day2EveningLines : _day1EveningLines;

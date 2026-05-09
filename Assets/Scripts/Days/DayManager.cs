@@ -21,13 +21,12 @@ public class DayManager : MonoBehaviour
 
     [Header("Stats")]
     public int relationshipStat = 0;
-    public float daughterHealth = 90f;
+    public float daughterHealth = 90f; // Starting health
 
-    // One-off story flags: e.g. "has_opened_curtains", "has_placed_homework"
     private Dictionary<string, bool> _flags = new Dictionary<string, bool>();
 
-    [Header("Debug")] public string mostRecentFlag;
-    
+    [Header("Debug")] 
+    public string mostRecentFlag;
 
     void Awake()
     {
@@ -40,13 +39,12 @@ public class DayManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    
+
     public void AdvanceDay()
     {
         currentDay++;
         Debug.Log($"[DayManager] Day advanced to {currentDay}");
     }
-
 
     public void SetFlag(string key, bool value = true)
     {
@@ -58,7 +56,6 @@ public class DayManager : MonoBehaviour
     {
         return _flags.TryGetValue(key, out bool value) && value;
     }
-    
 
     public void AddRelationship(int amount)
     {
@@ -69,16 +66,22 @@ public class DayManager : MonoBehaviour
     public void SetDaughterHealth(float value)
     {
         daughterHealth = Mathf.Clamp(value, 0f, 100f);
-        Debug.Log($"[DayManager] Daughter health: {daughterHealth}");
+        Debug.Log($"[DayManager] Health set directly to: {daughterHealth}");
     }
 
+    /// <summary>
+    /// Use this to subtract (or add) health. e.g., ModifyDaughterHealth(-10f)
+    /// </summary>
     public void ModifyDaughterHealth(float delta)
     {
-        SetDaughterHealth(daughterHealth + delta);
-    }
+        daughterHealth = Mathf.Clamp(daughterHealth + delta, 0f, 100f);
+        Debug.Log($"[DayManager] Health modified by {delta}. New health: {daughterHealth}");
 
-    public static int GetCurrentDay(DayManager instance)
-    {
-        return instance.currentDay;
+        if (daughterHealth <= 0)
+        {
+            Debug.LogWarning("[DayManager] Health reached 0!");
+            // TODO: You can broadcast an event here or set a flag if she dies
+            SetFlag("daughter_died", true);
+        }
     }
 }
