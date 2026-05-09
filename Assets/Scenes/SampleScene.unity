@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1672,7 +1672,7 @@ MonoBehaviour:
   interactRadius: 2
   interactLabel: Interact
   repeatable: 0
-  indicatorObject: {fileID: 0}
+  indicatorObject: {fileID: 160328117}
   indicatorHeight: 1.5
   floatSpeed: 1.5
   floatAmount: 0.1
@@ -1926,6 +1926,7 @@ MonoBehaviour:
   bedroomArt: {fileID: 21300000, guid: 098847f24abbf4793bd8519585e0e279, type: 3}
   killArt: {fileID: 0}
   killChoicePanel: {fileID: 945783163}
+  day7Sequence: {fileID: 0}
   startOfDayResumeEvent:
     idInternal: 0
     valueGuidInternal: 
@@ -2613,7 +2614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &410087040
 Light:
   m_ObjectHideFlags: 0
